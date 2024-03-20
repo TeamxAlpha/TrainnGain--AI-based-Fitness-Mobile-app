@@ -12,10 +12,6 @@
 
 </div>
 
-### Demo Screenshot
-
-![React Native Fitness App Demo](./readme-images/React-Native-Fitness-App.png "Desktop Demo")
-
 ## Get Started
 
 install dev dependencies
