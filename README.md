@@ -1,10 +1,4 @@
 <div align="center">
-  
-  ![GitHub repo size](https://img.shields.io/github/repo-size/geeky-prashant/react-native-fitness-app)
-  ![GitHub stars](https://img.shields.io/github/stars/geeky-prashant/react-native-fitness-app?style=social)
-  ![GitHub forks](https://img.shields.io/github/forks/geeky-prashant/react-native-fitness-app?style=social)
- 
-  <br />
 
   <h2 align="center">React Native Fitness App</h2>
 
