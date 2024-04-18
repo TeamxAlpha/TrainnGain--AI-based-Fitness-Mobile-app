@@ -2,14 +2,31 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 
-const Login = ({ navigation }) => {
+const Signup = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/logo.png')} onPress={() => navigation.navigate('Home')} style={{ width: 200, height: 200, resizeMode: 'contain', marginBottom: 20 }} />
-      <Text style={styles.header}>Login</Text>
+      <Text style={styles.header}>Signup</Text>
+      <Input
+        placeholder="Name"
+        leftIcon={{ type: 'font-awesome', name: 'user' }}
+        containerStyle={{ marginBottom: 20 }}
+        leftIconContainerStyle={{ marginRight: 10 }}
+      />
       <Input
         placeholder="Email"
         leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+        containerStyle={{ marginBottom: 20 }}
+        leftIconContainerStyle={{ marginRight: 10 }}
+      />
+      <Input
+        placeholder="Age"
+        leftIcon={{ type: 'font-awesome', name: 'hashtag' }}
+        containerStyle={{ marginBottom: 20 }}
+        leftIconContainerStyle={{ marginRight: 10 }}
+      />
+      <Input
+        placeholder="Gender"
+        leftIcon={{ type: 'font-awesome', name: 'venus-mars' }}
         containerStyle={{ marginBottom: 20 }}
         leftIconContainerStyle={{ marginRight: 10 }}
       />
@@ -20,9 +37,9 @@ const Login = ({ navigation }) => {
         containerStyle={{ marginBottom: 20 }}
         leftIconContainerStyle={{ marginRight: 10 }}
       />
-      <Button title="Log In" buttonStyle={{ backgroundColor: '#3F51B5' }} />
-      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.signupText}>Don't have an account? Sign Up!</Text>
+      <Button title="Sign Up" buttonStyle={{ backgroundColor: '#3F51B5' }} />
+      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <Text style={styles.signupText}>Already have an account? Log In!</Text>
       </TouchableOpacity>
     </View>
   );
@@ -46,4 +63,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Login;
+export default Signup;
