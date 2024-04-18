@@ -65,6 +65,9 @@ const Menu = ({ onClose }) => {
         <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Login')}>
           <Text style={styles.menuText}>Login</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Signup')}>
+          <Text style={styles.menuText}>Signup</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.closeButton} onPress={onClose}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; 
-import { Header } from 'react-native-elements';
 
 const NutritionScreen = () => {
   const navigation = useNavigation(); 
