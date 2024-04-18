@@ -33,6 +33,22 @@ const NutritionScreen = () => {
         </Modal>
 
         <TouchableOpacity style={styles.section} onPress={() => {
+          setSelectedText('When you want to gain weight, it is like adding extra fuel to the engine of your body. You need to eat more calories than your body burns every day. But it is not just about eating anything. You want to choose foods that give you lots of good stuff your body needs, like proteins, healthy fats, and carbs from whole grains, fruits, and veggies. Exercise, especially strength training like lifting weights, helps build muscle mass, which adds healthy weight. Take it slow, though, so your body can adjust comfortably. And do not forget to rest and recover between workouts.');
+          setModalVisible(true);
+          setModalBgImage(require("../assets/gainWeight.jpg"))
+        }}>
+          <Text style={styles.text}>Gaining Weight - Tips</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.section} onPress={() => {
+          setSelectedText('When you are trying to lose weight, it is like putting your body on a budget. You want to eat fewer calories than your body uses up, creating a "deficit." To do this, focus on eating plenty of fruits, veggies, lean meats, and whole grains while cutting back on sugary drinks and processed foods. Exercise helps burn off extra calories and keeps your body healthy. Pay attention to portion sizes and drink lots of water to help you feel full. Remember, it is a journey, so be patient and stick with your healthy habits for the best results.');
+          setModalVisible(true);
+          setModalBgImage(require("../assets/lostWeight.jpg"))
+        }}>
+          <Text style={styles.text}>Losing Weight - Tips</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.section} onPress={() => {
           setSelectedText('Macronutrients are essential nutrients that our bodies require in large amounts for energy production, growth, and overall health. There are three primary macronutrients: carbohydrates, proteins, and fats. Carbohydrates are the primary source of energy, proteins for the body and are essential for muscle repair and growth, and fats play a role in hormone regulation and nutrient absorption. Understanding how to balance these macronutrients in your diet is crucial for achieving your fitness goals.');
           setModalVisible(true);
           setModalBgImage(require("../assets/macroNutrients.jpg"))
