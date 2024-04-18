@@ -1,14 +1,15 @@
 import React, { useState, useContext } from 'react';
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import FitnessCards from '../components/FitnessCards';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 import { FitnessItems } from '../Context';
-import NutritionScreen from './Nutrition';
+import FitnessCards from '../components/FitnessCards';
 
 const HomeScreen = () => {
   const [showIcon, setShowIcon] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const { calories, minutes, workout } = useContext(FitnessItems);
+  const navigation = useNavigation(); // Initialize navigation
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 20 }}>
@@ -17,7 +18,7 @@ const HomeScreen = () => {
           <TouchableOpacity onPress={() => setShowMenu(!showMenu)}>
             <Ionicons name="menu-outline" size={24} color="white" />
           </TouchableOpacity>
-          <Text style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>TrainGain</Text>
+          <Text style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>Train & Gain</Text>
 
           {/* Dark Mode */}
           <TouchableOpacity onPress={() => setShowIcon(!showIcon)}>
@@ -52,22 +53,25 @@ const HomeScreen = () => {
   )
 }
 
-const Menu = ({ onClose }) => (
-  <TouchableWithoutFeedback onPress={onClose}>
-  <View style={styles.menuContainer}>
-    <TouchableOpacity style={styles.menuItem} onPress={(NutritionScreen) }>
-      <Text style={styles.menuText}>Nutritions</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.menuItem} onPress={()=> console.log('Login') }>
-      <Text style={styles.menuText}>Login</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-      <Ionicons name="close" size={24} color="black" />
-    </TouchableOpacity>
-   
-  </View>
-  </TouchableWithoutFeedback>
-);
+const Menu = ({ onClose }) => {
+  const navigation = useNavigation(); // Initialize navigation
+
+  return (
+    <TouchableWithoutFeedback onPress={onClose}>
+      <View style={styles.menuContainer}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Nutrition')}>
+          <Text style={styles.menuText}>Nutritions</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.menuText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+          <Ionicons name="close" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
+  );
+};
 
 const styles = StyleSheet.create({
   shadowCards: {

@@ -100,7 +100,7 @@ export default [
       {
         id: "72",
         image: "https://thumbs.gfycat.com/MisguidedAridAlaskanmalamute-max-1mb.gif",
-        name: "DIAMOND_PUSHUP",
+        name: "DIAMOND PUSHUP",
         sets: 10,
       },
       {

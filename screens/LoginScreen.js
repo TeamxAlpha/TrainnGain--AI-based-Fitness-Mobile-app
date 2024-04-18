@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; 
 import { Header } from 'react-native-elements';
 
-const NutritionScreen = () => {
+const Login = () => {
   const navigation = useNavigation(); 
 
   return (
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NutritionScreen;
+export default Login;
