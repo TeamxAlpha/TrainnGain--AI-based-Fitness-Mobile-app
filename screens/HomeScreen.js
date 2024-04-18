@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 import { FitnessItems } from '../Context';
@@ -18,7 +18,10 @@ const HomeScreen = () => {
           <TouchableOpacity onPress={() => setShowMenu(!showMenu)}>
             <Ionicons name="menu-outline" size={24} color="white" />
           </TouchableOpacity>
-          <Text style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>Train & Gain</Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Image source={require('../assets/logo.png')} style={{ width: 30, height: 30, marginRight: 10 }} />
+            <Text style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>Train & Gain</Text>
+          </View>
 
           {/* Dark Mode */}
           <TouchableOpacity onPress={() => setShowIcon(!showIcon)}>
@@ -47,7 +50,7 @@ const HomeScreen = () => {
           </View>
         </View>
       </View>
-      {showMenu && <Menu onClose={() => setShowMenu(false)} />} 
+      {showMenu && <Menu onClose={() => setShowMenu(false)} />}
       <FitnessCards />
     </ScrollView>
   )
@@ -60,7 +63,7 @@ const Menu = ({ onClose }) => {
     <TouchableWithoutFeedback onPress={onClose}>
       <View style={styles.menuContainer}>
         <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Nutrition')}>
-          <Text style={styles.menuText}>Nutritions</Text>
+          <Text style={styles.menuText}>Nutrition Guidance</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Login')}>
           <Text style={styles.menuText}>Login</Text>
