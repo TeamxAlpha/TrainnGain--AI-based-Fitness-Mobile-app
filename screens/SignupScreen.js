@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
 const Signup = ({ navigation }) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSignup = () => {
+    console.log("Email: ", email, "Name: ",name, "Age: ",age, "Gender: ",gender ,"Password: ",password)
+  }
+
   return (
     <>
       <Ionicons
@@ -13,31 +23,45 @@ const Signup = ({ navigation }) => {
         size={24}
         color="black"
       />
+
       <View style={styles.container}>
+        <Image source={require('../assets/logo.png')} onPress={() => navigation.navigate('Home')} style={{ width: 200, height: 200, resizeMode: 'contain', marginBottom: 20 }} />
         <Text style={styles.header}>Signup</Text>
         <Input
           placeholder="Name"
           leftIcon={{ type: 'font-awesome', name: 'user' }}
           containerStyle={{ marginBottom: 20 }}
           leftIconContainerStyle={{ marginRight: 10 }}
+          value={name}
+          onChangeText={text => setName(text.toLowerCase())}
+          autoCapitalize="none"
         />
         <Input
           placeholder="Email"
           leftIcon={{ type: 'font-awesome', name: 'envelope' }}
           containerStyle={{ marginBottom: 20 }}
           leftIconContainerStyle={{ marginRight: 10 }}
+          value={email}
+          onChangeText={text => setEmail(text.toLowerCase())}
+          autoCapitalize="none"
         />
         <Input
           placeholder="Age"
           leftIcon={{ type: 'font-awesome', name: 'hashtag' }}
           containerStyle={{ marginBottom: 20 }}
           leftIconContainerStyle={{ marginRight: 10 }}
+          value={age}
+          onChangeText={text => setAge(text)}
+          autoCapitalize="none"
         />
         <Input
           placeholder="Gender"
           leftIcon={{ type: 'font-awesome', name: 'venus-mars' }}
           containerStyle={{ marginBottom: 20 }}
           leftIconContainerStyle={{ marginRight: 10 }}
+          value={gender}
+          onChangeText={text => setGender(text)}
+          autoCapitalize="none"
         />
         <Input
           placeholder="Password"
@@ -45,8 +69,11 @@ const Signup = ({ navigation }) => {
           leftIcon={{ type: 'font-awesome', name: 'lock' }}
           containerStyle={{ marginBottom: 20 }}
           leftIconContainerStyle={{ marginRight: 10 }}
+          value={password}
+          onChangeText={text => setPassword(text)}
+          autoCapitalize="none"
         />
-        <Button title="Sign Up" buttonStyle={{ backgroundColor: '#3F51B5' }} />
+        <Button title="Sign Up" buttonStyle={{ backgroundColor: '#3F51B5' }} onPress={handleSignup} />
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.signupText}>Already have an account? Log In!</Text>
         </TouchableOpacity>
@@ -54,6 +81,7 @@ const Signup = ({ navigation }) => {
     </>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -71,6 +99,5 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-
 
 export default Signup;

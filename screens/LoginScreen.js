@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
 const Login = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    console.log("Email: ", email, "Password: ",password)
+  }
+
   return (
     <>
       <Ionicons
@@ -22,6 +29,9 @@ const Login = ({ navigation }) => {
           leftIcon={{ type: 'font-awesome', name: 'envelope' }}
           containerStyle={{ marginBottom: 20 }}
           leftIconContainerStyle={{ marginRight: 10 }}
+          value={email}
+          onChangeText={text => setEmail(text.toLowerCase())}
+          autoCapitalize="none"
         />
         <Input
           placeholder="Password"
@@ -29,8 +39,11 @@ const Login = ({ navigation }) => {
           leftIcon={{ type: 'font-awesome', name: 'lock' }}
           containerStyle={{ marginBottom: 20 }}
           leftIconContainerStyle={{ marginRight: 10 }}
+          value={password}
+          onChangeText={text => setPassword(text)}
+          autoCapitalize="none"
         />
-        <Button title="Log In" buttonStyle={{ backgroundColor: '#3F51B5' }} />
+        <Button title="Log In" buttonStyle={{ backgroundColor: '#3F51B5' }} onPress={handleLogin} />
         <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
           <Text style={styles.signupText}>Don't have an account? Sign Up!</Text>
         </TouchableOpacity>
@@ -38,6 +51,7 @@ const Login = ({ navigation }) => {
     </>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -55,6 +69,5 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-
 
 export default Login;
