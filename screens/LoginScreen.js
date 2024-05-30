@@ -7,9 +7,35 @@ const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    console.log("Email: ", email, "Password: ",password)
+
+  async function handleLogin() {
+
+    try {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address");
+        return;
+      }
+
+      const response = await axios.post("http://localhost:8000/", {
+        email,
+        password,
+      });
+
+      if (response.data.success) {
+        const nameFromResponse = response.data.username;
+        sessionStorage.setItem("name", nameFromResponse);
+        console.log(nameFromResponse, "Login Name")
+        //router.push("/");
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      alert("Error occurred while logging in");
+      console.log(error);
+    }
   }
+
 
   return (
     <>

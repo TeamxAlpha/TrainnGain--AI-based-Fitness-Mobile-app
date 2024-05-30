@@ -2,16 +2,44 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 const Signup = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
+  const [weight, setWeight] = useState('');
   const [gender, setGender] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignup = () => {
-    console.log("Email: ", email, "Name: ",name, "Age: ",age, "Gender: ",gender ,"Password: ",password)
+  async function handleSignup() {
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/signup", {
+        name,
+        email,
+        password,
+        age,
+        weight,
+        gender
+      });
+
+      if (response.data.status === "exist") {
+        alert("User already exists");
+      } else {
+        signupSuccesful();
+      }
+    } catch (error) {
+      alert("Error occurred while signing up");
+      console.log(error,"Frontend");
+    }
   }
 
   return (
@@ -61,6 +89,15 @@ const Signup = ({ navigation }) => {
           leftIconContainerStyle={{ marginRight: 10 }}
           value={gender}
           onChangeText={text => setGender(text)}
+          autoCapitalize="none"
+        />
+        <Input
+          placeholder="Weight"
+          leftIcon={{ type: 'font-awesome', name: 'venus-mars' }}
+          containerStyle={{ marginBottom: 20 }}
+          leftIconContainerStyle={{ marginRight: 10 }}
+          value={weight}
+          onChangeText={text => setWeight(text)}
           autoCapitalize="none"
         />
         <Input

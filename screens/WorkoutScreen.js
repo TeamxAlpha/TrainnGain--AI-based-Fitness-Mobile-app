@@ -21,7 +21,7 @@ const WorkoutScreen = () => {
           style={{ width: "100%", height: 200, borderBottomLeftRadius: 20, borderBottomRightRadius: 20, marginBottom: 20 }}
           source={{ uri: route.params.image }}
         />
-
+      
         <Ionicons
           onPress={() => navigation.goBack()}
           style={{ position: 'absolute', top: 30, left: 20, backgroundColor: "white", borderRadius: 8, padding: 3 }}
