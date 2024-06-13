@@ -103,10 +103,11 @@ app.delete("/custom-plans/:exerciseId", async (req, res) => {    //exerciseId or
     const { exerciseId } = req.params;
   
     try {
-      const result = await CustomPlan.updateOne(
-        { 'exercise.id': exerciseId },
-        { $pull: { exercise: { id: exerciseId } } }
-      );
+      const result = await CustomPlan.findOneAndDelete(
+        { 'exercise.id': {
+            $eq: exerciseId
+        } },
+      ); 
   
       if (result.nModified === 0) {
         return res.status(404).json({ success: false, message: "Exercise not found in custom plan" });
@@ -115,7 +116,7 @@ app.delete("/custom-plans/:exerciseId", async (req, res) => {    //exerciseId or
       res.status(200).json({ success: true, message: "Exercise deleted from custom plan" });
     } catch (error) {
       console.error("Error deleting exercise from custom plan:", error);
-      res.status(500).json({ success: false, message: "Internal Server Error" });
+      res.status(500).json({ success: false, message: "Internal Server Error", error });
     }
   });
 
