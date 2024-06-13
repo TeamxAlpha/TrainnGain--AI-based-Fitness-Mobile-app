@@ -18,7 +18,9 @@ const NutritionScreen = () => {
         size={24}
         color="black"
       />
+     
       <View style={styles.container}>
+      <Text style={{fontSize: 34, fontWeight: 'bold',marginBottom: 15}}>Nutritions</Text>
         <Modal
           visible={modalVisible}
           animationType="slide"
