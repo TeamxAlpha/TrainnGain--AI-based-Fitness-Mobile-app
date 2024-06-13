@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-fitness-app",
-    "slug": "react-native-fitness-app",
+    "name": "TrainandGain-Fitness-App",
+    "slug": "TrainandGain-Fitness-App",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
