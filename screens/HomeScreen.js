@@ -128,9 +128,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 50,
     right: 20,
-    backgroundColor: 'gray',
-    borderRadius: 50, // Making it circular
-    width: 50, // Adjust the size as needed
+    backgroundColor: 'white',
+    borderRadius: 50, 
+    width: 50, 
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',

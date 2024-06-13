@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView,ImageBackground, StyleSheet } from 'react-native';
-import bgImage from '../assets/Customworkouts.jpg';   
+import { View, Text, ScrollView,ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
+import bgImage from '../assets/Customworkouts.jpg';  
+import Icon from 'react-native-vector-icons/FontAwesome';  
+import { color } from 'react-native-elements/dist/helpers';
  
 const CustomWorkouts = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -8,7 +10,7 @@ const CustomWorkouts = () => {
   useEffect(() => {
     // Simulating fetching data from customworkouts.js
     const customWorkoutsData = [
-      {
+      { 
         id: "0",
         name: "FULL BODY",
         description: "7x4 CHALLENGE",
@@ -173,25 +175,34 @@ const CustomWorkouts = () => {
 
     setWorkouts(customWorkoutsData);
   }, []);
+  
+  const addToCustomPlan = (exerciseId) => {
+    // Implement your logic here to add exercise to custom plan
+    console.log('Exercise added to custom plan:', exerciseId);
+  };
 
   return (
-    <ScrollView style={styles.container}>
-    <ImageBackground source={bgImage} style={styles.backgroundImage}></ImageBackground>
-      {workouts.map(workout => (
-        <View key={workout.id} style={styles.workoutContainer}>
-          <Text style={styles.title}>{workout.name}</Text>
-          <Text style={styles.description}>{workout.description}</Text>
-          <View style={styles.exercisesContainer}>
-            {workout.exercises.map(exercise => (
-              <View key={exercise.id} style={styles.exerciseContainer}>
-                <Text style={styles.exerciseName}>{exercise.name}</Text>
-                <Text>Sets: {exercise.sets}</Text>
-              </View>
-            ))}
+    <ImageBackground source={bgImage} style={styles.backgroundImage}>
+      <ScrollView style={styles.container}>
+        {workouts.map(workout => (
+          <View key={workout.id} style={styles.workoutContainer}>
+            <Text style={styles.title}>{workout.name}</Text>
+            <Text style={styles.description}>{workout.description}</Text>
+            <View style={styles.exercisesContainer}>
+              {workout.exercises.map(exercise => (
+                <View key={exercise.id} style={styles.exerciseContainer}>
+                  <Text style={styles.exerciseName}>{exercise.name}</Text>
+                  <Text style={{color:'white'}}>Sets: {exercise.sets}</Text>
+                  <TouchableOpacity onPress={() => addToCustomPlan(exercise.id)} style={styles.addButton}>
+                    <Icon name="plus" size={20} color="white" />
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
-      ))}
-    </ScrollView>
+        ))}
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
@@ -200,16 +211,24 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 50,
   },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
   workoutContainer: {
     marginBottom: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.01)',
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 5,
+    color: 'white',
   },
   description: {
     marginBottom: 10,
+    color: 'white',
   },
   exercisesContainer: {
     flexDirection: 'row',
@@ -219,13 +238,24 @@ const styles = StyleSheet.create({
   exerciseContainer: {
     width: '48%', // Adjust as needed to fit two items per row with some spacing
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: 'rgba(255, 255, 255, 0.7)', // White color with 70% opacity
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
   },
   exerciseName: {
     fontWeight: 'bold',
+    color: 'white',
+  },
+  setsText: {
+    color: 'white',
+  },
+  addButton: {
+    backgroundColor: 'gray',
+    padding: 5,
+    borderRadius: 5,
+    marginTop: 5,
+    alignItems: 'center', // Center the icon horizontally
   },
 });
 
