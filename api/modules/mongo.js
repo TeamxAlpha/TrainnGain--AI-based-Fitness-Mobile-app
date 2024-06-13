@@ -1,20 +1,21 @@
-const mongoose= require("mongoose")
-mongoose.connect("mongodb+srv://trainngain:asd@cluster0.ht4q82n.mongodb.net/")
-.then(() => {
-    console.log("BD Connected")
-})
-.catch(() => {
-    console.log("Failed to connect DB")
-})
+const mongoose = require("mongoose")
+mongoose.connect("mongodb+srv://trainngain:tng@cluster0.yca3ker.mongodb.net/")
+    .then(() => {
+        console.log("DB Connected");
+    })
+    .catch((err) => {
+        console.error("Failed to connect DB:", err);
+    });
 
-const newSchema= new mongoose.Schema({
+const newSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -26,7 +27,7 @@ const newSchema= new mongoose.Schema({
     },
     weight: {
         type: Number,
-        required: true
+        require: true
     },
     gender: {
         type: String,
@@ -34,6 +35,6 @@ const newSchema= new mongoose.Schema({
     }
 })
 
-const userauth = mongoose.model("User", newSchema);
+const usersauth = mongoose.model("TNGusers", newSchema)
 
-module.exports=userauth;
+module.exports = usersauth;
