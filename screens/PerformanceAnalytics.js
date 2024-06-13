@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const PerformanceAnalytics = () => {
   const [performanceData, setPerformanceData] = useState([]);
-  const [userId, setUserId] = useState(''); // Assume userId is set appropriately
+  const [userId, setUserId] = useState(''); 
 
   useEffect(() => {
     const fetchPerformanceData = async () => {
@@ -28,7 +28,7 @@ const PerformanceAnalytics = () => {
           labels: performanceData.map((entry) => entry.date),
           datasets: [
             {
-              data: performanceData.map((entry) => entry.value), // Replace 'value' with actual data point
+              data: performanceData.map((entry) => entry.value),
             },
           ],
         }}

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const GoalAchievement = () => {
   const [goal, setGoal] = useState('');
-  const [userId, setUserId] = useState(''); // Assume userId is set appropriately
+  const [userId, setUserId] = useState(''); 
   const [goalStatus, setGoalStatus] = useState(null);
 
   const setNewGoal = async () => {

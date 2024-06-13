@@ -160,7 +160,6 @@ app.delete("/custom-plans/:exerciseId", async (req, res) => {
         return res.status(404).json({ success: false, message: "User not found" });
       }
   
-      // Example: Calculate average workout duration
       const averageDuration = user.workouts.reduce((acc, workout) => acc + workout.duration, 0) / user.workouts.length;
   
       res.status(200).json({ success: true, averageDuration });
