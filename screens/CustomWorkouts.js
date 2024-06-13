@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView,ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
 import bgImage from '../assets/Customworkouts.jpg';  
 import Icon from 'react-native-vector-icons/FontAwesome';  
-import { color } from 'react-native-elements/dist/helpers';
+import { Ionicons } from '@expo/vector-icons';
  
 const CustomWorkouts = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -183,6 +183,7 @@ const CustomWorkouts = () => {
 
   return (
     <ImageBackground source={bgImage} style={styles.backgroundImage}>
+
       <ScrollView style={styles.container}>
         {workouts.map(workout => (
           <View key={workout.id} style={styles.workoutContainer}>
