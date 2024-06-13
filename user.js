@@ -120,6 +120,95 @@ app.delete("/custom-plans/:exerciseId", async (req, res) => {    //exerciseId or
     }
   });
 
+  app.put("/update-user-data/:userId", async (req, res) => {
+    const { userId } = req.params;
+    const { data } = req.body;
+  
+    try {
+      const user = await User.findByIdAndUpdate(userId, { $set: data }, { new: true });
+      res.status(200).json({ success: true, data: user });
+    } catch (error) {
+      console.error("Error updating user data:", error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  });
+  
+  app.get("/analyze-data/:userId", async (req, res) => {
+    const { userId } = req.params;
+  
+    try {
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ success: false, message: "User not found" });
+      }
+  
+      // Example: Calculate average workout duration
+      const averageDuration = user.workouts.reduce((acc, workout) => acc + workout.duration, 0) / user.workouts.length;
+  
+      res.status(200).json({ success: true, averageDuration });
+    } catch (error) {
+      console.error("Error analyzing user data:", error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  });
+  app.post("/set-goal/:userId", async (req, res) => {
+    const { userId } = req.params;
+    const { goal } = req.body;
+  
+    try {
+      const user = await User.findByIdAndUpdate(userId, { $set: { goal } }, { new: true });
+      res.status(200).json({ success: true, data: user });
+    } catch (error) {
+      console.error("Error setting goal:", error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  });
+  
+  app.get("/check-goal/:userId", async (req, res) => {
+    const { userId } = req.params;
+  
+    try {
+      const user = await User.findById(userId);
+      
+      if (!user) {
+        return res.status(404).json({ success: false, message: "User not found" });
+      }
+  
+      const isGoalAchieved = user.currentStats >= user.goal; // Example condition
+  
+      res.status(200).json({ success: true, isGoalAchieved });
+    } catch (error) {
+      console.error("Error checking goal:", error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  });
+
+  app.get("/performance-analytics/:userId", async (req, res) => {
+    const { userId } = req.params;
+  
+    try {
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ success: false, message: "User not found" });
+      }
+  
+      // Example: Analyze progress over the last month
+      const monthlyProgress = user.workouts.filter(workout => {
+        const workoutDate = new Date(workout.date);
+        const currentDate = new Date();
+        return workoutDate >= new Date(currentDate.setMonth(currentDate.getMonth() - 1));
+      });
+  
+      res.status(200).json({ success: true, monthlyProgress });
+    } catch (error) {
+      console.error("Error getting performance analytics:", error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  });
+  
+
 app.listen(5001, () => {
     console.log("Node js server started");
 });
