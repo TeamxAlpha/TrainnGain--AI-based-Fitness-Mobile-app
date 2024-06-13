@@ -12,9 +12,15 @@ const Signup = ({ navigation }) => {
   const [gender, setGender] = useState('');
   const [password, setPassword] = useState('');
 
-  async function handleSignup() {
-
-    // Validate email format
+  async function handleSignup(name, email, password, age, weight, gender) {
+    console.log(
+      "Name: ", name,
+      "Email: ", email,
+      "Password: ", password,
+      "Age: ", age,
+      "Weight: ", weight,
+      "Gender: ", gender,
+    );
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       alert("Please enter a valid email address");
@@ -22,7 +28,7 @@ const Signup = ({ navigation }) => {
     }
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/signup", {
+      const response = await axios.post("http://192.168.100.1/signup", {
         name,
         email,
         password,
@@ -37,9 +43,47 @@ const Signup = ({ navigation }) => {
         signupSuccesful();
       }
     } catch (error) {
-      alert("Error occurred while signing up");
-      console.log(error,"Frontend");
+      if (error.response) {
+        // Server responded with a status other than 200 range
+        alert(`Error: ${error.response.data.message}`);
+      } else if (error.request) {
+        // Request was made but no response was received
+        alert("Network error: Please check your internet connection or server status.");
+      } else {
+        // Something else happened
+        alert(`Error: ${error.message}`);
+      }
+      console.log(error);
     }
+    /*try {
+      const response = await axios.post("http://192.168.100.1:8000/signup", {
+        name,
+        email,
+        password,
+        age,
+        weight,
+        gender
+      });
+
+      if (response.data.status === "exist") {
+        alert("User already exists");
+      } else {
+        alert("Signup successful!");
+        navigation.navigate('Home');
+      }
+    } catch (error) {
+      if (error.response) {
+        // Server responded with a status other than 200 range
+        alert(`Error: ${error.response.data.message}`);
+      } else if (error.request) {
+        // Request was made but no response was received
+        alert("Network error: Please check your internet connection or server status.");
+      } else {
+        // Something else happened
+        alert(`Error: ${error.message}`);
+      }
+      console.log(error);
+    }*/
   }
 
   return (
@@ -61,7 +105,7 @@ const Signup = ({ navigation }) => {
           containerStyle={{ marginBottom: 20 }}
           leftIconContainerStyle={{ marginRight: 10 }}
           value={name}
-          onChangeText={text => setName(text.toLowerCase())}
+          onChangeText={text => setName(text)}
           autoCapitalize="none"
         />
         <Input
@@ -93,7 +137,7 @@ const Signup = ({ navigation }) => {
         />
         <Input
           placeholder="Weight"
-          leftIcon={{ type: 'font-awesome', name: 'venus-mars' }}
+          leftIcon={{ type: 'font-awesome', name: 'balance-scale' }}
           containerStyle={{ marginBottom: 20 }}
           leftIconContainerStyle={{ marginRight: 10 }}
           value={weight}
@@ -110,7 +154,7 @@ const Signup = ({ navigation }) => {
           onChangeText={text => setPassword(text)}
           autoCapitalize="none"
         />
-        <Button title="Sign Up" buttonStyle={{ backgroundColor: '#3F51B5' }} onPress={handleSignup} />
+        <Button title="Sign Up" buttonStyle={{ backgroundColor: '#3F51B5' }} onPress={() => handleSignup(name, email, password, age, weight, gender)} />
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.signupText}>Already have an account? Log In!</Text>
         </TouchableOpacity>
