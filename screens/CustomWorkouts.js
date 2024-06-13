@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { View, Text, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, Button, ToastAndroid } from 'react-native';
 import bgImage from '../assets/Customworkouts.jpg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Ionicons } from '@expo/vector-icons';
@@ -219,24 +219,43 @@ const CustomWorkouts = ({ navigation }) => {  // Accept navigation as prop
   const addToCustomPlan = (exerciseId) => {
     const selectedExercise = workouts.flatMap(workout => workout.exercises).find(exercise => exercise.id === exerciseId);
     if (selectedExercise) {
-      const exerciseData = {
-        email: email,
-        exercise: {
-          id: selectedExercise.id,
-          name: selectedExercise.name,
-          image: selectedExercise.image,
-          sets: selectedExercise.sets,
-        }
-      };
+      const exerciseAlreadyAdded = customPlan.find(exercise => exercise.id === selectedExercise.id);
+      if (exerciseAlreadyAdded) {
+        ToastAndroid.showWithGravity(
+          `Workout already added to custom plan: ${selectedExercise.name}`,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
+      } else {
+        const exerciseData = {
+          email: email,
+          exercise: {
+            id: selectedExercise.id,
+            name: selectedExercise.name,
+            image: selectedExercise.image,
+            sets: selectedExercise.sets,
+          }
+        };
 
-      setCustomPlan([...customPlan, selectedExercise]);
-      axios.post('http://192.168.137.1:5001/custom-plans', exerciseData) //192.168.137.1 Zohaib's
-        .then(response => {
-          console.log('Exercise added to custom plan:', response.data);
-        })
-        .catch(error => {
-          console.error('Error adding exercise to custom plan:', error);
-        });
+        setCustomPlan([...customPlan, selectedExercise]);
+        axios.post('http://192.168.100.8:5001/custom-plans', exerciseData) //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
+          .then(response => {
+            ToastAndroid.showWithGravity(
+              `Workout added to custom plan: ${selectedExercise.name}`,
+              ToastAndroid.SHORT,
+              ToastAndroid.CENTER
+            );
+            console.log('Exercise added to custom plan:', response.data);
+          })
+          .catch(error => {
+            console.error('Error adding exercise to custom plan:', error);
+            ToastAndroid.showWithGravity(
+              `Error adding workout to custom plan: ${error.message}`,
+              ToastAndroid.SHORT,
+              ToastAndroid.CENTER
+            );
+          });
+      }
     }
   };
 

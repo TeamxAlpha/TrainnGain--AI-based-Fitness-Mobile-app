@@ -1,11 +1,45 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const StartWorkout = ({ route }) => {
-  const { customPlan } = route.params;
-  const [plan, setPlan] = useState(customPlan);
+  const [plan, setPlan] = useState([]);
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    AsyncStorage.getItem('email')
+      .then(email => {
+        if (email) {
+          setEmail(email);
+          axios.get(`http://192.168.100.8:5001/custom-plans/${email}`)
+            .then(response => {
+              if (response.data.success) {
+                const transformedData = response.data.data.map(item => ({
+                  id: item.exercise.id.toString(), // Assuming id should be a string
+                  image: item.exercise.image,
+                  name: item.exercise.name,
+                  sets: item.exercise.sets
+                }));
+                setPlan(transformedData);
+                console.log("PLANNNNN: ", plan)
+              } else {
+                console.error('Error retrieving custom plans:', response.data.message);
+              }
+            })
+            .catch(error => {
+              console.error('Error retrieving custom plans:', error);
+            });
+        } else {
+          console.error('Email is null or undefined');
+        }
+      })
+      .catch(error => {
+        console.error('Error retrieving email from AsyncStorage:', error);
+      });
+  }, []);
+  
 
   const deleteExercise = async (exerciseId) => {
     try {
@@ -36,6 +70,8 @@ const StartWorkout = ({ route }) => {
           </View>
         )}
       />
+
+
     </View>
   );
 };
