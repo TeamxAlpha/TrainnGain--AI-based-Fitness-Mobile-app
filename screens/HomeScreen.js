@@ -4,6 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 import { FitnessItems } from '../Context';
 import FitnessCards from '../components/FitnessCards';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 const HomeScreen = () => {
   const [showIcon, setShowIcon] = useState(false);
@@ -52,6 +54,10 @@ const HomeScreen = () => {
       </View>
       {showMenu && <Menu onClose={() => setShowMenu(false)} />}
       <FitnessCards />
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CustomWorkout')}>
+      <MaterialCommunityIcons name="pencil" size={24} color="black" />
+      </TouchableOpacity>
     </ScrollView>
   )
 }
@@ -117,6 +123,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 20,
     right: 20,
+  },
+  button: {
+    position: 'absolute',
+    bottom: 50,
+    right: 20,
+    backgroundColor: 'gray',
+    borderRadius: 50, // Making it circular
+    width: 50, // Adjust the size as needed
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
