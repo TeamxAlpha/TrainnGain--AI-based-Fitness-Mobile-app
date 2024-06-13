@@ -13,7 +13,7 @@ const StartWorkout = ({ route }) => {
       const updatedPlan = plan.filter((exercise) => exercise.id !== exerciseId);
       setPlan(updatedPlan);
 
-      const response = await axios.delete(`http://192.168.137.1:5001/custom-plans/${exerciseId}`);
+      const response = await axios.delete(`http://192.168.137.1:5001/custom-plans/${exerciseId}`);  //192.168.137.1 Zohaib
       console.log('Exercise deleted from custom plan:', response.data);
     } catch (error) {
       console.error('Error deleting exercise from custom plan:', error);
