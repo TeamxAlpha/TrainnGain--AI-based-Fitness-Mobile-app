@@ -7,25 +7,24 @@ const StartWorkout = ({ route }) => {
   const { customPlan } = route.params;
   const [plan, setPlan] = useState(customPlan);
 
-
   const deleteExercise = async (exerciseId) => {
     try {
-      
+
       const updatedPlan = plan.filter((exercise) => exercise.id !== exerciseId);
       setPlan(updatedPlan);
 
-      
       const response = await axios.delete(`http://192.168.137.1:5001/custom-plans/${exerciseId}`);
       console.log('Exercise deleted from custom plan:', response.data);
     } catch (error) {
       console.error('Error deleting exercise from custom plan:', error);
     }
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Your Workout Plan</Text>
       <FlatList
-        data={customPlan}
+        data={plan}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.exerciseContainer}>
@@ -56,6 +55,9 @@ const styles = StyleSheet.create({
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   exerciseName: {
     fontSize: 18,

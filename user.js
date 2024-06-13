@@ -99,6 +99,26 @@ app.post("/custom-plans", async (req, res) => {
   }
 });
 
+app.delete("/custom-plans/:exerciseId", async (req, res) => {
+    const { exerciseId } = req.params;
+  
+    try {
+      const result = await CustomPlan.updateOne(
+        { 'exercise.id': exerciseId },
+        { $pull: { exercise: { id: exerciseId } } }
+      );
+  
+      if (result.nModified === 0) {
+        return res.status(404).json({ success: false, message: "Exercise not found in custom plan" });
+      }
+  
+      res.status(200).json({ success: true, message: "Exercise deleted from custom plan" });
+    } catch (error) {
+      console.error("Error deleting exercise from custom plan:", error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  });
+
 app.listen(5001, () => {
     console.log("Node js server started");
 });
