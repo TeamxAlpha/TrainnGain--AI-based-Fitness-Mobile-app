@@ -1,9 +1,26 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios';
 
 const StartWorkout = ({ route }) => {
   const { customPlan } = route.params;
+  const [plan, setPlan] = useState(customPlan);
 
+
+  const deleteExercise = async (exerciseId) => {
+    try {
+      
+      const updatedPlan = plan.filter((exercise) => exercise.id !== exerciseId);
+      setPlan(updatedPlan);
+
+      
+      const response = await axios.delete(`http://192.168.137.1:5001/custom-plans/${exerciseId}`);
+      console.log('Exercise deleted from custom plan:', response.data);
+    } catch (error) {
+      console.error('Error deleting exercise from custom plan:', error);
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Your Workout Plan</Text>
@@ -14,6 +31,9 @@ const StartWorkout = ({ route }) => {
           <View style={styles.exerciseContainer}>
             <Text style={styles.exerciseName}>{item.name}</Text>
             <Text style={styles.setsText}>Sets: {item.sets}</Text>
+            <TouchableOpacity onPress={() => deleteExercise(item.id)} style={styles.deleteButton}>
+              <Icon name="trash" size={20} color="red" />
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -44,6 +64,9 @@ const styles = StyleSheet.create({
   setsText: {
     fontSize: 16,
     color: '#555',
+  },
+  deleteButton: {
+    marginLeft: 10,
   },
 });
 
