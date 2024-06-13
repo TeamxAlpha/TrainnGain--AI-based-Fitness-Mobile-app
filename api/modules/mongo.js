@@ -1,11 +1,5 @@
 const mongoose = require("mongoose")
-mongoose.connect("mongodb+srv://trainngain:tng@cluster0.yca3ker.mongodb.net/")
-    .then(() => {
-        console.log("DB Connected");
-    })
-    .catch((err) => {
-        console.error("Failed to connect DB:", err);
-    });
+
 
 const newSchema = new mongoose.Schema({
     name: {
@@ -33,8 +27,10 @@ const newSchema = new mongoose.Schema({
         type: String,
         required: true
     }
+},{
+    collection: "UserInfo"
 })
 
-const usersauth = mongoose.model("TNGusers", newSchema)
+const usersauth = mongoose.model("UserInfo", newSchema)
 
 module.exports = usersauth;

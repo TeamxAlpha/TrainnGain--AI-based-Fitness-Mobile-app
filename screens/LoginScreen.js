@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -17,16 +19,16 @@ const Login = ({ navigation }) => {
         return;
       }
 
-      const response = await axios.post("http://localhost:8000/", {
+      const response = await axios.post("http://192.168.100.8:5001/login", {
         email,
         password,
       });
 
       if (response.data.success) {
         const nameFromResponse = response.data.username;
-        sessionStorage.setItem("name", nameFromResponse);
+        await AsyncStorage.setItem("name", nameFromResponse);
         console.log(nameFromResponse, "Login Name")
-        //router.push("/");
+        navigation.navigate('Home')
       } else {
         alert(response.data.message);
       }

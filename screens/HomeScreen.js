@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
@@ -11,7 +11,7 @@ const HomeScreen = () => {
   const [showIcon, setShowIcon] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const { calories, minutes, workout } = useContext(FitnessItems);
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation(); 
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 20 }}>
@@ -63,7 +63,7 @@ const HomeScreen = () => {
 }
 
 const Menu = ({ onClose }) => {
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation();
 
   return (
     <TouchableWithoutFeedback onPress={onClose}>
