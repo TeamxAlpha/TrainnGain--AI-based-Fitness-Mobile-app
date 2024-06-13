@@ -1,79 +1,98 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView,ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
-import bgImage from '../assets/Customworkouts.jpg';  
-import Icon from 'react-native-vector-icons/FontAwesome';  
+import { View, Text, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import bgImage from '../assets/Customworkouts.jpg';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { Ionicons } from '@expo/vector-icons';
- 
-const CustomWorkouts = () => {
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const CustomWorkouts = ({ navigation }) => {  // Accept navigation as prop
   const [workouts, setWorkouts] = useState([]);
+  const [customPlan, setCustomPlan] = useState([]);
+  const [email, setEmail] = useState('')
 
   useEffect(() => {
-    // Simulating fetching data from customworkouts.js
     const customWorkoutsData = [
-      { 
+      {
         id: "0",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrEM-6gDUO7g1cdrNhBaqk_0nwxy6ILlIqsQ&usqp=CAU",
         name: "FULL BODY",
         description: "7x4 CHALLENGE",
         exercises: [
           {
             id: "10",
+            image:
+              "https://sworkit.com/wp-content/uploads/2020/06/sworkit-jumping-jack.gif",
             name: "JUMPING JACKS",
             sets: 12,
           },
           {
             id: "11",
+            image: "https://media.self.com/photos/583c641ca8746f6e65a60c7e/master/w_1600%2Cc_limit/DIAMOND_PUSHUP_MOTIFIED.gif",
             name: "INCLINED PUSH-UPS",
             sets: 10,
           },
           {
             id: "12",
+            image: "https://cdn.prod.openfit.com/uploads/2020/03/10162714/wide-arm-push-up.gif",
             name: "WIDE ARM PUSH-UPS",
             sets: 12,
           },
           {
             id: "13",
+            image: "https://www.yogajournal.com/wp-content/uploads/2021/12/Cobra.gif?width=730",
             name: "COBRA STRETCH",
             sets: 10,
           },
           {
             id: "14",
+            image: "https://www.vissco.com/wp-content/uploads/animation/sub/double-knee-to-chest-stretch.gif",
             name: "CHEST STRETCH",
             sets: 10,
           }
-        ]
+        ],
       },
       {
         id: "1",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRonpSjpGQ2-JD8-XFFD7LYsVSFCOiASj0wSOq1qxNvxGFHe7W6AU1LRAeJ2fOIzYICMGc&usqp=CAU",
         name: "ABS BEGINNER",
         description: "7x4 CHALLENGE",
         exercises: [
           {
             id: "90",
+            image: "https://media1.popsugar-assets.com/files/thumbor/f2sbzQY1h1zqiGEV9Mhr1IAcFMU/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2017/03/13/796/n/1922729/19cf2a4428446429_EXAMPLE.crossjacks.gif",
             name: "JUMPING JACKS",
             sets: 12,
           },
           {
             id: "91",
+            image: "https://i.pinimg.com/originals/18/27/be/1827be178c019b1dc6f8a8d8b4a7b0b8.gif",
             name: "MOUNTAIN CLIMBERS",
             sets: 10,
           },
           {
             id: "92",
+            image: "https://i.pinimg.com/originals/f4/b0/f3/f4b0f3093fcadd64968e4c46d1767b50.gif",
             name: "HEEL TOUCH",
             sets: 20,
           },
           {
             id: "94",
+            image: "https://i.pinimg.com/originals/cf/b5/67/cfb5677a755fe7288b608a4fec6f09a0.gif",
             name: "PLANK",
             sets: 10,
           },
           {
             id: "95",
+            image: "https://www.gymguider.com/wp-content/uploads/2017/10/straight-leg-raise.gif",
             name: "LEG RAISES",
             sets: 14,
           }
         ]
-      },{
+      },
+      {
         id: "2",
         image:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1NHvoutGn-Vr_uwVbOOtezhENvx9jhV6pfQ&usqp=CAU",
@@ -109,7 +128,7 @@ const CustomWorkouts = () => {
             image: "https://i.pinimg.com/originals/8c/53/27/8c532774e4e1c524576bf1fb829ad895.gif",
             name: "DUMBELL CURL",
             sets: 11,
-    
+
           },
           {
             id: "75",
@@ -169,20 +188,71 @@ const CustomWorkouts = () => {
             sets: 10
           }
         ]
-      },
-      
+      }
     ];
 
     setWorkouts(customWorkoutsData);
   }, []);
-  
+
+  useEffect(() => {
+    const getEmail = async () => {
+      try {
+        const email = await AsyncStorage.getItem('email');
+        if (email) {
+          setEmail(email);
+        } else {
+          setEmail(null);
+        }
+      } catch (error) {
+        console.error('Failed to fetch the email from AsyncStorage', error);
+      }
+    };
+    getEmail();
+
+    const interval = setInterval(() => {
+      getEmail();
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [setEmail]);
+
   const addToCustomPlan = (exerciseId) => {
-    // Implement your logic here to add exercise to custom plan
-    console.log('Exercise added to custom plan:', exerciseId);
+    const selectedExercise = workouts.flatMap(workout => workout.exercises).find(exercise => exercise.id === exerciseId);
+    if (selectedExercise) {
+      const exerciseData = {
+        email: email,
+        exercise: {
+          id: selectedExercise.id,
+          name: selectedExercise.name,
+          image: selectedExercise.image,
+          sets: selectedExercise.sets,
+        }
+      };
+
+      setCustomPlan([...customPlan, selectedExercise]);
+      axios.post('http://192.168.100.8:5001/custom-plans', exerciseData)
+        .then(response => {
+          console.log('Exercise added to custom plan:', response.data);
+        })
+        .catch(error => {
+          console.error('Error adding exercise to custom plan:', error);
+        });
+    }
+  };
+
+  const startWorkout = () => {
+    navigation.navigate('StartWorkout', { customPlan });
   };
 
   return (
     <ImageBackground source={bgImage} style={styles.backgroundImage}>
+      <Ionicons
+        onPress={() => navigation.navigate('Home')}
+        style={{ position: 'absolute', top: 40, left: 10, backgroundColor: "white", borderRadius: 8, padding: 3 }}
+        name="arrow-back-outline"
+        size={24}
+        color="black"
+      />
 
       <ScrollView style={styles.container}>
         {workouts.map(workout => (
@@ -193,7 +263,7 @@ const CustomWorkouts = () => {
               {workout.exercises.map(exercise => (
                 <View key={exercise.id} style={styles.exerciseContainer}>
                   <Text style={styles.exerciseName}>{exercise.name}</Text>
-                  <Text style={{color:'white'}}>Sets: {exercise.sets}</Text>
+                  <Text style={{ color: 'white' }}>Sets: {exercise.sets}</Text>
                   <TouchableOpacity onPress={() => addToCustomPlan(exercise.id)} style={styles.addButton}>
                     <Icon name="plus" size={20} color="white" />
                   </TouchableOpacity>
@@ -203,6 +273,9 @@ const CustomWorkouts = () => {
           </View>
         ))}
       </ScrollView>
+      <TouchableOpacity style={styles.startButton} onPress={startWorkout}>
+        <Text style={styles.startButtonText}>Start Workout</Text>
+      </TouchableOpacity>
     </ImageBackground>
   );
 };
@@ -237,9 +310,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   exerciseContainer: {
-    width: '48%', // Adjust as needed to fit two items per row with some spacing
+    width: '48%',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.7)', // White color with 70% opacity
+    borderColor: 'rgba(255, 255, 255, 0.7)',
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
@@ -256,7 +329,19 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5,
     marginTop: 5,
-    alignItems: 'center', // Center the icon horizontally
+    alignItems: 'center',
+  },
+  startButton: {
+    backgroundColor: '#2196F3',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+    margin: 20,
+  },
+  startButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 

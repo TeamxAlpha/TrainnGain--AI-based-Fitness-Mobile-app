@@ -1,5 +1,6 @@
 const express = require("express");
 const usersauth = require("./api/modules/mongo");
+const CustomPlan = require("./api/modules/customplan")
 const bcrypt = require("bcrypt");
 const session = require('express-session');
 const app = express();
@@ -63,6 +64,7 @@ app.post("/login", async (req, res) => {
             return res.status(200).json({
                 success: true,
                 username: user.name,
+                email: user.email
             });
         } else {
             return res.json({ success: false, message: "Invalid email or password" });
@@ -72,6 +74,30 @@ app.post("/login", async (req, res) => {
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 })
+
+app.post("/custom-plans", async (req, res) => {
+    const { email, exercise } = req.body;
+
+  if (!email || !exercise || !exercise.id || !exercise.name || !exercise.image || !exercise.sets) {
+    return res.status(400).json({ success: false, message: "Missing required fields" });
+  }
+
+  try {
+    const newCustomPlan = await CustomPlan.create({
+      email,
+      exercise: {
+        id: exercise.id,
+        name: exercise.name,
+        image: exercise.image,
+        sets: exercise.sets,
+      }
+    });
+
+    res.status(201).json({ success: true, data: newCustomPlan });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 app.listen(5001, () => {
     console.log("Node js server started");

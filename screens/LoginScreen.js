@@ -26,7 +26,10 @@ const Login = ({ navigation }) => {
 
       if (response.data.success) {
         const nameFromResponse = response.data.username;
+        console.log(response.data)
+        const emailFromResponse = response.data.email;
         await AsyncStorage.setItem("name", nameFromResponse);
+        await AsyncStorage.setItem("email", emailFromResponse);
         console.log(nameFromResponse, "Login Name")
         navigation.navigate('Home')
       } else {

@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Image, TouchableWithoutFeedback, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native';
 import { FitnessItems } from '../Context';
 import FitnessCards from '../components/FitnessCards';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = () => {
   const [showIcon, setShowIcon] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const { calories, minutes, workout } = useContext(FitnessItems);
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 20 }}>
@@ -56,7 +56,7 @@ const HomeScreen = () => {
       <FitnessCards />
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CustomWorkout')}>
-      <MaterialCommunityIcons name="pencil" size={24} color="black" />
+        <MaterialCommunityIcons name="pencil" size={24} color="black" />
       </TouchableOpacity>
     </ScrollView>
   )
@@ -64,19 +64,85 @@ const HomeScreen = () => {
 
 const Menu = ({ onClose }) => {
   const navigation = useNavigation();
+  const [ userName, setUserName ] = useState('');
+
+  useEffect(() => {
+    const getUserName = async () => {
+      try {
+        const name = await AsyncStorage.getItem('name');
+        if (name) {
+          setUserName(name);
+        } else {
+          setUserName(null);
+        }
+      } catch (error) {
+        console.error('Failed to fetch the user name from AsyncStorage', error);
+      }
+    };
+
+    getUserName(); 
+
+    const interval = setInterval(() => {
+      getUserName();
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [setUserName]);
+
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Logout',
+          onPress: async () => {
+            try {
+              await AsyncStorage.removeItem('name');
+              setUserName(null);
+            } catch (error) {
+              console.error('Failed to log out', error);
+            }
+          },
+          style: 'destructive',
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   return (
     <TouchableWithoutFeedback onPress={onClose}>
       <View style={styles.menuContainer}>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Nutrition')}>
-          <Text style={styles.menuText}>Nutrition Guidance</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.menuText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Signup')}>
-          <Text style={styles.menuText}>Signup</Text>
-        </TouchableOpacity>
+        {userName ? (
+          <>
+            <View style={styles.userContainer}>
+              <Text style={styles.menuName}>{userName}</Text>
+              <TouchableOpacity onPress={handleLogout}>
+                <Ionicons name="log-out-outline" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Nutrition')}>
+              <Text style={styles.menuText}>Nutrition Guidance</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Nutrition')}>
+              <Text style={styles.menuText}>Nutrition Guidance</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.menuText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Signup')}>
+              <Text style={styles.menuText}>Signup</Text>
+            </TouchableOpacity>
+          </>
+        )}
         <TouchableOpacity style={styles.closeButton} onPress={onClose}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
@@ -119,6 +185,11 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 18,
   },
+  menuName: {
+    fontSize: 18,
+    borderBottomWidth: 3,
+    borderBottomColor: "#ccc",
+  },
   closeButton: {
     position: "absolute",
     top: 20,
@@ -129,11 +200,18 @@ const styles = StyleSheet.create({
     bottom: 50,
     right: 20,
     backgroundColor: 'white',
-    borderRadius: 50, 
-    width: 50, 
+    borderRadius: 50,
+    width: 50,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  userContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: 10,
   },
 });
 
