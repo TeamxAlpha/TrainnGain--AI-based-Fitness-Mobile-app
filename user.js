@@ -99,7 +99,7 @@ app.post("/custom-plans", async (req, res) => {
   }
 });
 
-app.delete("/custom-plans/:exerciseId", async (req, res) => {
+app.delete("/custom-plans/:exerciseId", async (req, res) => {    //exerciseId or Id simple in endpoint
     const { exerciseId } = req.params;
   
     try {
