@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CustomWorkouts = ({ navigation }) => {  // Accept navigation as prop
+const CustomWorkouts = ({ navigation }) => { 
   const [workouts, setWorkouts] = useState([]);
   const [customPlan, setCustomPlan] = useState([]);
   const [email, setEmail] = useState('')

@@ -7,7 +7,7 @@ const HomeScreen = ({ navigation }) => {
       <Text style={styles.title}>Workout Tracker</Text>
       <Button
         title="Start Workout"
-        onPress={() => navigation.navigate('StartWorkout', { customPlan: [] })} // Pass empty plan for now
+        onPress={() => navigation.navigate('StartWorkout', { customPlan: [] })} 
       />
       <Button
         title="Goal Achievement"

@@ -10,7 +10,7 @@ const PerformanceAnalytics = () => {
   useEffect(() => {
     const fetchPerformanceData = async () => {
       try {
-        const response = await axios.get(`http://192.168.137.1:5001/performance-analytics/${userId}`);
+        const response = await axios.get(`http://192.168.137.1:5001/performance-analytics/${userId}`); //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
         setPerformanceData(response.data.monthlyProgress);
       } catch (error) {
         console.error('Error fetching performance data:', error);
