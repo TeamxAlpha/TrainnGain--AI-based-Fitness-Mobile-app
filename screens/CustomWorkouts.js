@@ -230,7 +230,7 @@ const CustomWorkouts = ({ navigation }) => {  // Accept navigation as prop
       };
 
       setCustomPlan([...customPlan, selectedExercise]);
-      axios.post('http://192.168.100.8:5001/custom-plans', exerciseData)
+      axios.post('http://192.168.137.1:5001/custom-plans', exerciseData)
         .then(response => {
           console.log('Exercise added to custom plan:', response.data);
         })

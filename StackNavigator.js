@@ -9,6 +9,7 @@ import NutritionScreen from './screens/Nutrition';
 import Login from "./screens/LoginScreen";
 import Signup from './screens/SignupScreen';
 import CustomWorkout from './screens/CustomWorkouts';
+import StartWorkout from './screens/StartWorkout';
  
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -23,6 +24,7 @@ const StackNavigator = () => {
         <Stack.Screen options={{ headerShown: false }} name="Login" component={Login} />
         <Stack.Screen options={{ headerShown: false }} name="Signup" component={Signup} />
         <Stack.Screen options={{ headerShown: false }} name="CustomWorkout" component={CustomWorkout} />
+        <Stack.Screen option= {{ headerShown: false }} name="StartWorkout" component={StartWorkout} />
       </Stack.Navigator>
     </NavigationContainer>
   )
