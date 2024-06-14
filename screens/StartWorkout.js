@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity,ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import bg from '../assets/StartWorkoutbg.jpg';
+
 
 const StartWorkout = ({ route }) => {
   const [plan, setPlan] = useState([]);
   const [email, setEmail] = useState('');
+  const navigation = useNavigation();
 
   useEffect(() => {
     AsyncStorage.getItem('email')
       .then(email => {
         if (email) {
           setEmail(email);
-          axios.get(`http://192.168.100.8:5001/custom-plans/${email}`) //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
+          axios.get(`http://192.168.137.1:5001/custom-plans/${email}`) //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
             .then(response => {
               if (response.data.success) {
                 const transformedData = response.data.data.map(item => ({
@@ -39,7 +44,7 @@ const StartWorkout = ({ route }) => {
         console.error('Error retrieving email from AsyncStorage:', error);
       });
   }, []);
-  
+
 
   const deleteExercise = async (exerciseId) => {
     try {
@@ -54,8 +59,14 @@ const StartWorkout = ({ route }) => {
     }
   };
 
+  const startWorkout = () => {
+    navigation.navigate('Fit', { exercises: plan });
+  };
+
   return (
+    
     <View style={styles.container}>
+    <ImageBackground source={bg} style={styles.backgroundImage}></ImageBackground>
       <Text style={styles.title}>Your Workout Plan</Text>
       <FlatList
         data={plan}
@@ -66,6 +77,11 @@ const StartWorkout = ({ route }) => {
             <Text style={styles.setsText}>Sets: {item.sets}</Text>
             <TouchableOpacity onPress={() => deleteExercise(item.id)} style={styles.deleteButton}>
               <Icon name="trash" size={20} color="red" />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={startWorkout} style={styles.startButton}>
+              <Ionicons name="fitness-outline" size={24} color="white" style={styles.icon} />
+              <Text style={styles.startButtonText}>Start Workout</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -87,11 +103,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'cover',
+   
+  },
   exerciseContainer: {
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -106,6 +128,21 @@ const styles = StyleSheet.create({
   deleteButton: {
     marginLeft: 10,
   },
+  startButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'gray',
+    padding: 10,
+    borderRadius: 8,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  startButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+
 });
 
 export default StartWorkout;

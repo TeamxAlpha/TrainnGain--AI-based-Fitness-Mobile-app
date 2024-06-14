@@ -238,7 +238,7 @@ const CustomWorkouts = ({ navigation }) => {
         };
 
         setCustomPlan([...customPlan, selectedExercise]);
-        axios.post('http://192.168.100.8:5001/custom-plans', exerciseData) //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
+        axios.post('http://192.168.137.1:5001/custom-plans', exerciseData) //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
           .then(response => {
             ToastAndroid.showWithGravity(
               `Workout added to custom plan: ${selectedExercise.name}`,

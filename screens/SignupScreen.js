@@ -25,7 +25,7 @@ async function handleSignup() {
   const userData = {
     name, email, password, age, weight, gender
   }
-  axios.post("http://192.168.100.8:5001/register", userData) //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
+  axios.post("http://192.168.137.1:5001/register", userData) //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
     .then((res) => signupSuccesful())
     .catch(e => console.log(e))
 }
