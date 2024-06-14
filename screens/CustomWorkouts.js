@@ -293,7 +293,7 @@ const CustomWorkouts = ({ navigation }) => {
         ))}
       </ScrollView>
       <TouchableOpacity style={styles.startButton} onPress={startWorkout}>
-        <Text style={styles.startButtonText}>Start Workout</Text>
+        <Text style={styles.startButtonText}>See Your Plan</Text>
       </TouchableOpacity>
     </ImageBackground>
   );

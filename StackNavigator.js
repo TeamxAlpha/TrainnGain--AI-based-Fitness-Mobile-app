@@ -12,6 +12,7 @@ import CustomWorkout from './screens/CustomWorkouts';
 import StartWorkout from './screens/StartWorkout';
 import GoalAchievement from './screens/GoalAchievement';
 import PerformanceAnalytics from './screens/PerformanceAnalytics';
+import ProgressTracking from './screens/ProgressTracking';
  
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -29,6 +30,7 @@ const StackNavigator = () => {
         <Stack.Screen option= {{ headerShown: false }} name="StartWorkout" component={StartWorkout} />
         <Stack.Screen option= {{ headerShown: false }} name="GoalAchievement" component={GoalAchievement} />
         <Stack.Screen option= {{ headerShown: false }} name="PerformanceAnalytics" component={PerformanceAnalytics} />
+        <Stack.Screen option= {{ headerShown: false }} name="ProgressTracking" component={ProgressTracking} />
       </Stack.Navigator>
     </NavigationContainer>
   )

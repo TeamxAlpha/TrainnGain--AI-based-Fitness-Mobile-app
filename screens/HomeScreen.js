@@ -129,18 +129,23 @@ const Menu = ({ onClose }) => {
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Nutrition')}>
               <Text style={styles.menuText}>Nutrition Guidance</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ProgressTracking')}>
+              <Text style={styles.menuText}>Progress Tracking</Text>
+            </TouchableOpacity>
           </>
         ) : (
           <>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Nutrition')}>
-              <Text style={styles.menuText}>Nutrition Guidance</Text>
-            </TouchableOpacity>
+            
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Login')}>
               <Text style={styles.menuText}>Login</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Signup')}>
               <Text style={styles.menuText}>Signup</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Nutrition')}>
+              <Text style={styles.menuText}>Nutrition Guidance</Text>
+            </TouchableOpacity>
+            
           </>
         )}
         <TouchableOpacity style={styles.closeButton} onPress={onClose}>
