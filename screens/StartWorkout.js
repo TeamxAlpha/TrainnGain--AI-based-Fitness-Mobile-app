@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const StartWorkout = ({ route }) => {
+const StartWorkout = ({ route, navigation }) => {
   const [plan, setPlan] = useState([]);
   const [email, setEmail] = useState('');
 
@@ -13,7 +13,7 @@ const StartWorkout = ({ route }) => {
       .then(email => {
         if (email) {
           setEmail(email);
-          axios.get(`http://192.168.100.8:5001/custom-plans/${email}`) //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
+          axios.get(`http://192.168.100.8:5001/custom-plans/${email}`)
             .then(response => {
               if (response.data.success) {
                 const transformedData = response.data.data.map(item => ({
@@ -23,7 +23,8 @@ const StartWorkout = ({ route }) => {
                   sets: item.exercise.sets
                 }));
                 setPlan(transformedData);
-                console.log("PLANNNNN: ", plan)
+              } else if (response.data.data.length === 0) {
+                console.log('No custom plans found for this email.');
               } else {
                 console.error('Error retrieving custom plans:', response.data.message);
               }
@@ -39,18 +40,26 @@ const StartWorkout = ({ route }) => {
         console.error('Error retrieving email from AsyncStorage:', error);
       });
   }, []);
-  
 
   const deleteExercise = async (exerciseId) => {
     try {
-
       const updatedPlan = plan.filter((exercise) => exercise.id !== exerciseId);
       setPlan(updatedPlan);
 
-      const response = await axios.delete(`http://192.168.137.1:5001/custom-plans/${exerciseId}`);  //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
+      const response = await axios.delete(`http://192.168.100.8:5001/custom-plans/${exerciseId}`); //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
       console.log('Exercise deleted from custom plan:', response.data);
     } catch (error) {
       console.error('Error deleting exercise from custom plan:', error);
+    }
+  };
+
+  const startWorkout = () => {
+    if (plan.length === 0) {
+      alert("Please add an exercise first.");
+    } else {
+      navigation.navigate('Workout', {
+        exercises: plan,
+      });
     }
   };
 
@@ -70,8 +79,9 @@ const StartWorkout = ({ route }) => {
           </View>
         )}
       />
-
-
+      <TouchableOpacity onPress={() => startWorkout()} style={styles.startButton}>
+        <Text style={styles.startButtonText}>Start Workout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -105,6 +115,19 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     marginLeft: 10,
+  },
+  startButton: {
+    marginLeft: 10,
+    backgroundColor: '#007bff',
+    padding: 10,
+    borderRadius: 5,
+  },
+  startButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textAlignVertical: 'center',
   },
 });
 

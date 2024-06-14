@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { Image, ScrollView, TouchableOpacity, View, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { FitnessItems } from '../Context';
 
@@ -10,6 +10,9 @@ const WorkoutScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const { completed, setCompleted } = useContext(FitnessItems);
+
+  useEffect(() => {
+  }, []);
 
   return (
     <>
