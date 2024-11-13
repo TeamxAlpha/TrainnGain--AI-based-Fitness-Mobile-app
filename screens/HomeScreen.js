@@ -132,6 +132,7 @@ const Menu = ({ onClose }) => {
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ProgressTracking')}>
               <Text style={styles.menuText}>Progress Tracking</Text>
             </TouchableOpacity>
+            
           </>
         ) : (
           <>
@@ -145,7 +146,9 @@ const Menu = ({ onClose }) => {
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Nutrition')}>
               <Text style={styles.menuText}>Nutrition Guidance</Text>
             </TouchableOpacity>
-            
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('BiceupCheck')}>
+              <Text style={styles.menuText}>Biceup Check</Text>
+            </TouchableOpacity>
           </>
         )}
         <TouchableOpacity style={styles.closeButton} onPress={onClose}>

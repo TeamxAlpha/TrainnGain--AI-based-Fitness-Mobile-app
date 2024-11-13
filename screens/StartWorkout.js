@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import bg from '../assets/StartWorkoutbg.jpg';
 
 
-const StartWorkout = ({ route, navigation }) => {
+const StartWorkout = ({  }) => {
   const [plan, setPlan] = useState([]);
   const [email, setEmail] = useState('');
   const navigation = useNavigation();

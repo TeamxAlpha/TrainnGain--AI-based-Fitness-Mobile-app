@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CustomWorkouts = ({ navigation }) => { 
+const CustomWorkouts = ({ navigation }) => {
   const [workouts, setWorkouts] = useState([]);
   const [customPlan, setCustomPlan] = useState([]);
   const [email, setEmail] = useState('')
@@ -267,7 +267,7 @@ const CustomWorkouts = ({ navigation }) => {
     <ImageBackground source={bgImage} style={styles.backgroundImage}>
       <Ionicons
         onPress={() => navigation.navigate('Home')}
-        style={{ position: 'absolute', top: 40, left: 10, backgroundColor: "white", borderRadius: 8, padding: 3 }}
+        style={styles.backIcon}
         name="arrow-back-outline"
         size={24}
         color="black"
@@ -282,9 +282,9 @@ const CustomWorkouts = ({ navigation }) => {
               {workout.exercises.map(exercise => (
                 <View key={exercise.id} style={styles.exerciseContainer}>
                   <Text style={styles.exerciseName}>{exercise.name}</Text>
-                  <Text style={{ color: 'white' }}>Sets: {exercise.sets}</Text>
+                  <Text style={styles.setsText}>Sets: {exercise.sets}</Text>
                   <TouchableOpacity onPress={() => addToCustomPlan(exercise.id)} style={styles.addButton}>
-                    <Icon name="plus" size={20} color="white" />
+                    <Icon name="plus" size={18} color="white" />
                   </TouchableOpacity>
                 </View>
               ))}
@@ -302,26 +302,37 @@ const CustomWorkouts = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 50,
+    padding: 30,
   },
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'center',
   },
+  backIcon: {
+    position: 'absolute',
+    top: 40,
+    left: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 8,
+    padding: 5,
+  },
   workoutContainer: {
     marginBottom: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.01)',
+    padding: 15,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    borderRadius: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: 'white',
+    color: '#f0f0f0',
   },
   description: {
     marginBottom: 10,
-    color: 'white',
+    color: '#d0d0d0',
+    fontSize: 14,
   },
   exercisesContainer: {
     flexDirection: 'row',
@@ -334,28 +345,35 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.7)',
     borderRadius: 10,
     padding: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     marginBottom: 10,
   },
   exerciseName: {
     fontWeight: 'bold',
-    color: 'white',
+    color: '#ffffff',
+    fontSize: 16,
+    marginBottom: 5,
   },
   setsText: {
-    color: 'white',
+    color: '#e0e0e0',
+    fontSize: 13,
   },
   addButton: {
-    backgroundColor: 'gray',
-    padding: 5,
+    backgroundColor: '#4a4a4a',
+    paddingVertical: 4,
+    paddingHorizontal: 10,
     borderRadius: 5,
-    marginTop: 5,
+    marginTop: 8,
     alignItems: 'center',
   },
   startButton: {
-    backgroundColor: '#2196F3',
-    padding: 15,
-    borderRadius: 5,
+    backgroundColor: '#1e88e5',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 25,
     alignItems: 'center',
-    margin: 20,
+    alignSelf: 'center',
+    marginVertical: 20,
   },
   startButtonText: {
     color: 'white',
