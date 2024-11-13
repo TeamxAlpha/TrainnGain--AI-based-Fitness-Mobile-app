@@ -194,6 +194,9 @@ const Menu = ({ onClose }) => {
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('BiceupCheck')}>
               <Text style={styles.menuText}>Biceup Check</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('SquatCheck')}>
+              <Text style={styles.menuText}>Squat Check</Text>
+            </TouchableOpacity>            
           </>
         ) : (
           <>
@@ -209,6 +212,9 @@ const Menu = ({ onClose }) => {
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('BiceupCheck')}>
               <Text style={styles.menuText}>Biceup Check</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('SquatCheck')}>
+              <Text style={styles.menuText}>Squat Check</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={showRandomTip}>
               <Text style={styles.menuText}>Tips & Tricks</Text>

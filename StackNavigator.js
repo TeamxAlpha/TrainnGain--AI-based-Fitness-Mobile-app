@@ -14,6 +14,7 @@ import GoalAchievement from './screens/GoalAchievement';
 import PerformanceAnalytics from './screens/PerformanceAnalytics';
 import ProgressTracking from './screens/ProgressTracking';
 import BicepCurlCheck from './screens/BicepCurl';
+import SquatCheck from './screens/Squat';
 import RecoveryZoneScreen from './screens/RecoveryZone';
 import RecoveryExercises from './screens/RecoveryExercises';
 
@@ -32,6 +33,7 @@ const StackNavigator = () => {
         <Stack.Screen options={{ headerShown: false }} name="CustomWorkout" component={CustomWorkout} />
         <Stack.Screen option={{ headerShown: false }} name="StartWorkout" component={StartWorkout} />
         <Stack.Screen option={{ headerShown: false }} name="BiceupCheck" component={BicepCurlCheck} />
+        <Stack.Screen option={{ headerShown: false }} name="SquatCheck" component={SquatCheck} />
         <Stack.Screen option= {{ headerShown: false }} name="GoalAchievement" component={GoalAchievement} />
         <Stack.Screen option= {{ headerShown: false }} name="PerformanceAnalytics" component={PerformanceAnalytics} />
         <Stack.Screen option= {{ headerShown: false }} name="ProgressTracking" component={ProgressTracking} />

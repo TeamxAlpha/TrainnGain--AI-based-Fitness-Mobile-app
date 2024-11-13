@@ -13,8 +13,6 @@ const BicepCurlCheck = () => {
   const [cameraType, setCameraType] = useState(CameraType.back);
 
   useEffect(() => {
-    console.log("CAMERRAAA", cameraType, "Permission: ", hasPermission);
-
     const loadModel = async () => {
       await tf.ready();
       const loadedModel = await posenet.load();
@@ -24,6 +22,7 @@ const BicepCurlCheck = () => {
 
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
+      console.log("Camera permission status: ", status, "Constants: ", Camera.Constants);
       setHasPermission(status === 'granted');
     })();
   }, []);
@@ -85,7 +84,7 @@ const BicepCurlCheck = () => {
         <Camera
           style={styles.camera}
           type={cameraType}
-          ref={setCameraRef}
+          ref={(ref) => setCameraRef(ref)}
         >
           <View style={styles.overlay}>
             <TouchableOpacity style={styles.checkButton} onPress={startPoseDetection}>
@@ -118,6 +117,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   camera: {
+    flex: 1,
     width: '100%',
     height: '100%',
     position: 'absolute',
@@ -161,40 +161,3 @@ const styles = StyleSheet.create({
 });
 
 export default BicepCurlCheck;
-
-
-// import React, { useState, useEffect } from 'react';
-// import { View, Text, Button } from 'react-native';
-// import { Camera } from 'expo-camera';
-// import { CameraType } from 'expo-camera/build/legacy/Camera.types';
-// // import { CameraType } from 'expo-camera/build/legacy/Camera.types';
-
-// export default function BicepCurlCheck() {
-//   const [hasPermission, setHasPermission] = useState(null);
-//   const [cameraRef, setCameraRef] = useState(null);
-//   const [type, setType] = useState(CameraType.back); // use front camera
-
-//   useEffect(() => {
-//     (async () => {
-//       const { status } = await Camera.requestCameraPermissionsAsync();
-//       setHasPermission(status === 'granted');
-//     })();
-//   }, []);
-
-//   if (hasPermission === null) {
-//     return <Text>Requesting for camera permission</Text>;
-//   }
-//   if (hasPermission === false) {
-//     return <Text>No access to camera</Text>;
-//   }
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <Camera
-//         style={{ flex: 1 }}
-//         type={type}
-//         ref={ref => setCameraRef(ref)}
-//       />
-//     </View>
-//   );
-// }
