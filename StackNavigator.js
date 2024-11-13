@@ -14,6 +14,8 @@ import GoalAchievement from './screens/GoalAchievement';
 import PerformanceAnalytics from './screens/PerformanceAnalytics';
 import ProgressTracking from './screens/ProgressTracking';
 import BicepCurlCheck from './screens/BicepCurl';
+import RecoveryZoneScreen from './screens/RecoveryZone';
+import RecoveryExercises from './screens/RecoveryExercises';
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -33,9 +35,15 @@ const StackNavigator = () => {
         <Stack.Screen option={{ headerShown: false }} name="PerformanceAnalytics" component={PerformanceAnalytics} />
         <Stack.Screen option={{ headerShown: false }} name="ProgressTracking" component={ProgressTracking} />
         <Stack.Screen option={{ headerShown: false }} name="BiceupCheck" component={BicepCurlCheck} />
+        <Stack.Screen option= {{ headerShown: false }} name="StartWorkout" component={StartWorkout} />
+        <Stack.Screen option= {{ headerShown: false }} name="GoalAchievement" component={GoalAchievement} />
+        <Stack.Screen option= {{ headerShown: false }} name="PerformanceAnalytics" component={PerformanceAnalytics} />
+        <Stack.Screen option= {{ headerShown: false }} name="ProgressTracking" component={ProgressTracking} />
+        <Stack.Screen option={{headerShown: false}} name="RecoveryZone" component={RecoveryZoneScreen}/>
+        <Stack.Screen option={{headerShown: false}} name="RecoveryExercises" component={RecoveryExercises}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
-}
+} 
 
 export default StackNavigator;

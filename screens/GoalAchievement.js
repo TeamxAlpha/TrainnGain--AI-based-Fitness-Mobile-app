@@ -9,7 +9,7 @@ const GoalAchievement = () => {
 
   const setNewGoal = async () => {
     try {
-      const response = await axios.post(`http://192.168.137.1:5001/set-goal/${userId}`, { goal }); //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
+      const response = await axios.post(`http://172.16.21.47:5001/set-goal/${userId}`, { goal }); //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
       console.log('Goal set:', response.data);
     } catch (error) {
       console.error('Error setting goal:', error);
@@ -18,7 +18,7 @@ const GoalAchievement = () => {
 
   const checkGoal = async () => {
     try {
-      const response = await axios.get(`http://192.168.137.1:5001/check-goal/${userId}`); //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
+      const response = await axios.get(`http://172.16.21.47:5001/check-goal/${userId}`); //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
       setGoalStatus(response.data.isGoalAchieved ? 'Goal Achieved!' : 'Keep Going!');
     } catch (error) {
       console.error('Error checking goal:', error);

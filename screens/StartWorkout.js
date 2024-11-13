@@ -11,14 +11,13 @@ import bg from '../assets/StartWorkoutbg.jpg';
 const StartWorkout = ({  }) => {
   const [plan, setPlan] = useState([]);
   const [email, setEmail] = useState('');
-  const navigation = useNavigation();
 
   useEffect(() => {
     AsyncStorage.getItem('email')
       .then(email => {
         if (email) {
           setEmail(email);
-          axios.get(`http://192.168.100.8:5001/custom-plans/${email}`)
+          axios.get(`http://192.168.100.114:5001/custom-plans/${email}`) // Zohaib's 192.168.100.114 
             .then(response => {
               if (response.data.success) {
                 const transformedData = response.data.data.map(item => ({
@@ -51,7 +50,7 @@ const StartWorkout = ({  }) => {
       const updatedPlan = plan.filter((exercise) => exercise.id !== exerciseId);
       setPlan(updatedPlan);
 
-      const response = await axios.delete(`http://192.168.100.8:5001/custom-plans/${exerciseId}`); //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
+      const response = await axios.delete(`http://192.168.100.114:5001/custom-plans/${exerciseId}`); //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
       console.log('Exercise deleted from custom plan:', response.data);
     } catch (error) {
       console.error('Error deleting exercise from custom plan:', error);
@@ -82,11 +81,6 @@ const StartWorkout = ({  }) => {
             <Text style={styles.setsText}>Sets: {item.sets}</Text>
             <TouchableOpacity onPress={() => deleteExercise(item.id)} style={styles.deleteButton}>
               <Icon name="trash" size={20} color="red" />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={startWorkout} style={styles.startButton}>
-              <Ionicons name="fitness-outline" size={24} color="white" style={styles.icon} />
-              <Text style={styles.startButtonText}>Start Workout</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -119,7 +113,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },

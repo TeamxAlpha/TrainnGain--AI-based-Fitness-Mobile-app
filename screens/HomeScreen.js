@@ -7,11 +7,63 @@ import FitnessCards from '../components/FitnessCards';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+const tipsAndTricks = [
+  "Stay hydrated throughout your workout.",
+  "Remember to warm up before starting your workout.",
+  "Focus on form to avoid injuries.",
+  "Take rest days to help muscles recover.",
+  "Gradually increase your workout intensity.",
+  "Fuel your body with nutritious food.",
+  "Set realistic and achievable fitness goals.",
+  "Track your progress to stay motivated.",
+  "Get enough sleep to aid muscle recovery.",
+  "Include strength training in your routine.",
+  "Mix up your exercises to prevent boredom.",
+  "Stretch after workouts to improve flexibility.",
+  "Listen to your body and avoid overtraining.",
+  "Workout with a friend for added motivation.",
+  "Celebrate small victories in your fitness journey.",
+  "Make time for mental relaxation to reduce stress.",
+  "Don't skip meals; fuel your workouts adequately.",
+  "Add variety to your cardio exercises.",
+  "Practice proper breathing techniques.",
+  "Aim for consistent, gradual progress.",
+  "Start with lighter weights and work your way up.",
+  "Wear comfortable and supportive workout attire.",
+  "Set both short-term and long-term fitness goals.",
+  "Incorporate core exercises for stability.",
+  "Avoid comparing your progress to others.",
+  "Use a foam roller to relieve sore muscles.",
+  "Reduce screen time before bed for better sleep.",
+  "Plan your workouts to fit your weekly schedule.",
+  "Challenge yourself but know your limits.",
+  "Take deep breaths to stay calm and focused."
+];
+
+
 const HomeScreen = () => {
   const [showIcon, setShowIcon] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const { calories, minutes, workout } = useContext(FitnessItems);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const showTipOnce = async () => {
+      const hasSeenTip = await AsyncStorage.getItem('hasSeenTip');
+
+      if (!hasSeenTip) {
+        const randomIndex = Math.floor(Math.random() * tipsAndTricks.length);
+        const randomTip = tipsAndTricks[randomIndex];
+
+        Alert.alert("Tip of the Day", randomTip, [{ text: "Got it!" }]);
+
+        await AsyncStorage.setItem('hasSeenTip', 'true');
+      }
+    };
+
+    showTipOnce();
+  }, []);
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 20 }}>
@@ -115,6 +167,12 @@ const Menu = ({ onClose }) => {
     );
   };
 
+  const showRandomTip = () => {
+    const randomIndex = Math.floor(Math.random() * tipsAndTricks.length);
+    const randomTip = tipsAndTricks[randomIndex];
+    Alert.alert("Tip of the Day", randomTip, [{ text: "Got it!" }]);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={onClose}>
       <View style={styles.menuContainer}>
@@ -131,8 +189,15 @@ const Menu = ({ onClose }) => {
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ProgressTracking')}>
               <Text style={styles.menuText}>Progress Tracking</Text>
+            </TouchableOpacity>           
+
+            <TouchableOpacity style={styles.menuItem} onPress={showRandomTip}>
+              <Text style={styles.menuText}>Day Tip</Text>
             </TouchableOpacity>
-            
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('RecoveryZone')}>
+              <Text style={styles.menuText}>Recovery Zone</Text>
+            </TouchableOpacity>
+
           </>
         ) : (
           <>
@@ -148,7 +213,8 @@ const Menu = ({ onClose }) => {
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('BiceupCheck')}>
               <Text style={styles.menuText}>Biceup Check</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>         
+            
           </>
         )}
         <TouchableOpacity style={styles.closeButton} onPress={onClose}>

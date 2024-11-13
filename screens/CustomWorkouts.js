@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, ImageBackground, StyleSheet, TouchableOpacity, Button, ToastAndroid } from 'react-native';
-import bgImage from '../assets/Customworkouts.jpg';
+import bgImage from '../assets/blackbg.jpg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
@@ -238,7 +238,7 @@ const CustomWorkouts = ({ navigation }) => {
         };
 
         setCustomPlan([...customPlan, selectedExercise]);
-        axios.post('http://192.168.137.1:5001/custom-plans', exerciseData) //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
+        axios.post('http://192.168.100.114:5001/custom-plans', exerciseData) //Zohaib's 192.168.100.114, Mahdi's 192.168.100.8
           .then(response => {
             ToastAndroid.showWithGravity(
               `Workout added to custom plan: ${selectedExercise.name}`,
