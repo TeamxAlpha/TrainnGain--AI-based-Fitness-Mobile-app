@@ -31,11 +31,7 @@ const StackNavigator = () => {
         <Stack.Screen options={{ headerShown: false }} name="Signup" component={Signup} />
         <Stack.Screen options={{ headerShown: false }} name="CustomWorkout" component={CustomWorkout} />
         <Stack.Screen option={{ headerShown: false }} name="StartWorkout" component={StartWorkout} />
-        <Stack.Screen option={{ headerShown: false }} name="GoalAchievement" component={GoalAchievement} />
-        <Stack.Screen option={{ headerShown: false }} name="PerformanceAnalytics" component={PerformanceAnalytics} />
-        <Stack.Screen option={{ headerShown: false }} name="ProgressTracking" component={ProgressTracking} />
         <Stack.Screen option={{ headerShown: false }} name="BiceupCheck" component={BicepCurlCheck} />
-        <Stack.Screen option= {{ headerShown: false }} name="StartWorkout" component={StartWorkout} />
         <Stack.Screen option= {{ headerShown: false }} name="GoalAchievement" component={GoalAchievement} />
         <Stack.Screen option= {{ headerShown: false }} name="PerformanceAnalytics" component={PerformanceAnalytics} />
         <Stack.Screen option= {{ headerShown: false }} name="ProgressTracking" component={ProgressTracking} />

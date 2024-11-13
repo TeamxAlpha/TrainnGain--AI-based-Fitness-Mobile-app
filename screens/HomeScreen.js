@@ -38,7 +38,7 @@ const tipsAndTricks = [
   "Reduce screen time before bed for better sleep.",
   "Plan your workouts to fit your weekly schedule.",
   "Challenge yourself but know your limits.",
-  "Take deep breaths to stay calm and focused."
+  "Take deep breaths to stay calm and focused.",
 ];
 
 
@@ -50,16 +50,11 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const showTipOnce = async () => {
-      const hasSeenTip = await AsyncStorage.getItem('hasSeenTip');
-
-      if (!hasSeenTip) {
-        const randomIndex = Math.floor(Math.random() * tipsAndTricks.length);
-        const randomTip = tipsAndTricks[randomIndex];
-
-        Alert.alert("Tip of the Day", randomTip, [{ text: "Got it!" }]);
-
-        await AsyncStorage.setItem('hasSeenTip', 'true');
-      }
+      await AsyncStorage.removeItem('hasSeenTip');
+      const randomIndex = Math.floor(Math.random() * tipsAndTricks.length);
+      const randomTip = tipsAndTricks[randomIndex];
+      Alert.alert("Tip of the Day", randomTip, [{ text: "Got it!" }]);
+      await AsyncStorage.setItem('hasSeenTip', 'true');
     };
 
     showTipOnce();
@@ -116,7 +111,7 @@ const HomeScreen = () => {
 
 const Menu = ({ onClose }) => {
   const navigation = useNavigation();
-  const [ userName, setUserName ] = useState('');
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
     const getUserName = async () => {
@@ -132,7 +127,7 @@ const Menu = ({ onClose }) => {
       }
     };
 
-    getUserName(); 
+    getUserName();
 
     const interval = setInterval(() => {
       getUserName();
@@ -189,19 +184,20 @@ const Menu = ({ onClose }) => {
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ProgressTracking')}>
               <Text style={styles.menuText}>Progress Tracking</Text>
-            </TouchableOpacity>           
-
+            </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={showRandomTip}>
-              <Text style={styles.menuText}>Day Tip</Text>
+              <Text style={styles.menuText}>Tips & Tricks</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('RecoveryZone')}>
               <Text style={styles.menuText}>Recovery Zone</Text>
             </TouchableOpacity>
-
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('BiceupCheck')}>
+              <Text style={styles.menuText}>Biceup Check</Text>
+            </TouchableOpacity>
           </>
         ) : (
           <>
-            
+
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Login')}>
               <Text style={styles.menuText}>Login</Text>
             </TouchableOpacity>
@@ -213,8 +209,14 @@ const Menu = ({ onClose }) => {
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('BiceupCheck')}>
               <Text style={styles.menuText}>Biceup Check</Text>
-            </TouchableOpacity>         
-            
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={showRandomTip}>
+              <Text style={styles.menuText}>Tips & Tricks</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('RecoveryZone')}>
+              <Text style={styles.menuText}>Recovery Zone</Text>
+            </TouchableOpacity>
+
           </>
         )}
         <TouchableOpacity style={styles.closeButton} onPress={onClose}>
