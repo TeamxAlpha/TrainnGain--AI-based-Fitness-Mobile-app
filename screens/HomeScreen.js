@@ -189,13 +189,15 @@ const Menu = ({ onClose }) => {
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ProgressTracking')}>
               <Text style={styles.menuText}>Progress Tracking</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>           
+
             <TouchableOpacity style={styles.menuItem} onPress={showRandomTip}>
               <Text style={styles.menuText}>Day Tip</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('RecoveryZone')}>
               <Text style={styles.menuText}>Recovery Zone</Text>
             </TouchableOpacity>
+
           </>
         ) : (
           <>
@@ -209,7 +211,9 @@ const Menu = ({ onClose }) => {
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Nutrition')}>
               <Text style={styles.menuText}>Nutrition Guidance</Text>
             </TouchableOpacity>
-            
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('BiceupCheck')}>
+              <Text style={styles.menuText}>Biceup Check</Text>
+            </TouchableOpacity>         
             
           </>
         )}
