@@ -1,81 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Button } from 'react-native';
-import { CameraView, useCameraPermissions } from 'expo-camera';
-import { CameraType } from 'expo-camera/build/legacy/Camera.types';
-import * as tf from '@tensorflow/tfjs';
-import * as posenet from '@tensorflow-models/pose-detection';
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { useState } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const BicepCurlCheck = () => {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [cameraRef, setCameraRef] = useState(null);
-  const [isPoseCorrect, setIsPoseCorrect] = useState(null);
-  const [model, setModel] = useState(null);
-  const [cameraType, setCameraType] = useState(CameraType.back);
+export default function BiceupCurlCheck() {
+  const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
 
-  useEffect(() => {
-    const loadModel = async () => {
-      await tf.ready();
-      const loadedModel = await posenet.load();
-      setModel(loadedModel);
-    };
-    loadModel();
-
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      console.log("Camera permission status: ", status, hasPermission);
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
-
-  useEffect(() => {
-    console.log("Permission: ", hasPermission, "HasPermission: ", permission);
-  }, [hasPermission]);
-
-  const calculateAngle = (a, b, c) => {
-    const radians = Math.atan2(c.y - b.y, c.x - b.x) - Math.atan2(a.y - b.y, a.x - b.x);
-    const angle = Math.abs(radians * (180 / Math.PI));
-    return angle > 180 ? 360 - angle : angle;
-  };
-
-  const checkBicepCurl = (landmarks) => {
-    const elbow = landmarks[7];
-    const shoulder = landmarks[5];
-    const wrist = landmarks[9];
-    console.log(elbow, shoulder, wrist)
-
-    const angle = calculateAngle(shoulder, elbow, wrist);
-    if (angle >= 150 && angle <= 180) {
-      setIsPoseCorrect(true);
-      Alert.alert("Good job!", "You are doing the bicep curl correctly.");
-    } else {
-      setIsPoseCorrect(false);
-      Alert.alert("Try again", "Adjust your arm position.");
-    }
-  };
-
-  const startPoseDetection = async () => {
-    if (cameraRef && model) {
-      const frame = await cameraRef.takePictureAsync();
-      const image = await tf.browser.fromPixels(frame);
-      const pose = await model.estimateSinglePose(image);
-      const landmarks = pose.keypoints;
-
-      if (pose && landmarks.length > 0) {
-        checkBicepCurl(landmarks);
-      }
-    }
-  };
-
-  const toggleCamera = () => {
-    setCameraType(prevType =>
-      prevType === CameraType.front
-        ? CameraType.back
-        : CameraType.front
-    );
-  };
-
   if (!permission) {
+    // Camera permissions are still loading.
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
@@ -84,91 +21,49 @@ const BicepCurlCheck = () => {
     );
   }
 
+  function toggleCameraFacing() {
+    setFacing(current => (current === 'back' ? 'front' : 'back'));
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bicep Curl Form Check</Text>
-      {hasPermission || permission && (
-        <View>
-          <CameraView
-            style={styles.camera}
-            type={cameraType}
-            ref={(ref) => setCameraRef(ref)}
-            flashMode='auto'
-
-          >
-            <View style={styles.overlay}>
-              <TouchableOpacity style={styles.checkButton} onPress={startPoseDetection}>
-                <Text style={styles.checkButtonText}>Check Bicep Curl</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.toggleButton} onPress={toggleCamera}>
-                <Text style={styles.toggleButtonText}>Toggle Camera</Text>
-              </TouchableOpacity>
-            </View>
-          </CameraView>
+      <CameraView style={styles.camera} facing={facing}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <Text style={styles.text}>Flip Camera</Text>
+          </TouchableOpacity>
         </View>
-      )}
-      {isPoseCorrect !== null && (
-        <Text style={styles.result}>
-          {isPoseCorrect ? "Form is Correct!" : "Form is Incorrect!"}
-        </Text>
-      )}
+      </CameraView>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+  },
+  message: {
+    textAlign: 'center',
+    paddingBottom: 10,
+  },
+  camera: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: 'flex-end',
     alignItems: 'center',
   },
-  title: {
+  text: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  titleCamera: {
-    flex: 1,
-    width: '50%',
-    height: '50%',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  overlay: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    paddingBottom: 30,
-  },
-  checkButton: {
-    backgroundColor: '#2196F3',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  checkButtonText: {
     color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  toggleButton: {
-    backgroundColor: '#FF5722',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  toggleButtonText: {
-    color: 'white',
-    fontSize: 16,
-  },
-  result: {
-    fontSize: 18,
-    marginTop: 20,
-    fontWeight: 'bold',
-    color: 'green',
   },
 });
-
-export default BicepCurlCheck;

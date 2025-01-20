@@ -35,7 +35,9 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow Train N Gain to access your camera"
+          "cameraPermission": "Allow Train N Gain to access your camera",
+          "microphonePermission": "Allow Train N Gain to access your microphone",
+          "recordAudioAndroid": true
         }
       ]
     ],
