@@ -6,6 +6,7 @@ import { FitnessItems } from '../Context';
 import FitnessCards from '../components/FitnessCards';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ChatBot from './ChatBot';
 
 
 const tipsAndTricks = [
@@ -171,6 +172,7 @@ const Menu = ({ onClose }) => {
   return (
     <TouchableWithoutFeedback onPress={onClose}>
       <View style={styles.menuContainer}>
+
         {userName ? (
           <>
             <View style={styles.userContainer}>
@@ -221,6 +223,9 @@ const Menu = ({ onClose }) => {
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('RecoveryZone')}>
               <Text style={styles.menuText}>Recovery Zone</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ChatBot')}>
+              <Text style={styles.menuText}>Chat with Us</Text>
             </TouchableOpacity>
 
           </>

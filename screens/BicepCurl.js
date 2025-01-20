@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function BiceupCurlCheck() {
-  const [facing, setFacing] = useState<CameraType>('back');
+  const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
 
   if (!permission) {
@@ -16,7 +16,7 @@ export default function BiceupCurlCheck() {
     return (
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Button onPress={requestPermission} title="Grant ermission" />
       </View>
     );
   }

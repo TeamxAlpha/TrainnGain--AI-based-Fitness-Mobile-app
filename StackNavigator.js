@@ -17,6 +17,7 @@ import BicepCurlCheck from './screens/BicepCurl';
 import SquatCheck from './screens/Squat';
 import RecoveryZoneScreen from './screens/RecoveryZone';
 import RecoveryExercises from './screens/RecoveryExercises';
+import ChatBot from './screens/ChatBot';
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -39,6 +40,8 @@ const StackNavigator = () => {
         <Stack.Screen option= {{ headerShown: false }} name="ProgressTracking" component={ProgressTracking} />
         <Stack.Screen option={{headerShown: false}} name="RecoveryZone" component={RecoveryZoneScreen}/>
         <Stack.Screen option={{headerShown: false}} name="RecoveryExercises" component={RecoveryExercises}/>
+        <Stack.Screen option={{headerShown: false}} name="ChatBot" component={ChatBot}/>
+
       </Stack.Navigator>
     </NavigationContainer>
   )
