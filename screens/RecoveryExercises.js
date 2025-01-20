@@ -65,7 +65,7 @@ const exercisesData = [
         description: "Sit and extend your leg out in front of you. Use your big toe to 'write' the alphabet in the air, moving your ankle. Repeat once or twice.",
       },
       {
-        title: "Ankle Inversion/Eversion with Resistance Band",
+        title: "Ankle Inversion/Eversion",
         description: "Secure a resistance band to an anchor and around the ball of your foot. Gently move your foot inward and outward against the resistance. Repeat 10-15 times in each direction.",
       },
       {

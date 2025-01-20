@@ -6,6 +6,7 @@ import { FitnessItems } from '../Context';
 import FitnessCards from '../components/FitnessCards';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ChatBot from './ChatBot';
 
 
 const tipsAndTricks = [
@@ -171,6 +172,7 @@ const Menu = ({ onClose }) => {
   return (
     <TouchableWithoutFeedback onPress={onClose}>
       <View style={styles.menuContainer}>
+
         {userName ? (
           <>
             <View style={styles.userContainer}>
@@ -194,9 +196,9 @@ const Menu = ({ onClose }) => {
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('BiceupCheck')}>
               <Text style={styles.menuText}>Biceup Check</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('SquatCheck')}>
+            {/* <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('SquatCheck')}>
               <Text style={styles.menuText}>Squat Check</Text>
-            </TouchableOpacity>            
+            </TouchableOpacity>             */}
           </>
         ) : (
           <>
@@ -213,14 +215,17 @@ const Menu = ({ onClose }) => {
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('BiceupCheck')}>
               <Text style={styles.menuText}>Biceup Check</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('SquatCheck')}>
+            {/* <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('SquatCheck')}>
               <Text style={styles.menuText}>Squat Check</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity style={styles.menuItem} onPress={showRandomTip}>
               <Text style={styles.menuText}>Tips & Tricks</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('RecoveryZone')}>
               <Text style={styles.menuText}>Recovery Zone</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ChatBot')}>
+              <Text style={styles.menuText}>Chat with Us</Text>
             </TouchableOpacity>
 
           </>

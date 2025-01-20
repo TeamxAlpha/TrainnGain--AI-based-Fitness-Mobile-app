@@ -19,7 +19,7 @@ const Login = ({ navigation }) => {
         return;
       }
 
-      const response = await axios.post("http://192.168.100.114:5001/login", { //Zohaib's 192.168.100.114, Mahdi's 192.168.100.8
+      const response = await axios.post("http://192.168.18.52:5001/login", { //Zohaib's 192.168.100.114, Mahdi's 192.168.100.8
         email,
         password,
       });
