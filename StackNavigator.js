@@ -18,6 +18,7 @@ import SquatCheck from './screens/Squat';
 import RecoveryZoneScreen from './screens/RecoveryZone';
 import RecoveryExercises from './screens/RecoveryExercises';
 import ChatBot from './screens/ChatBot';
+import CaloriePlanner from './screens/Calorieplanner';
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -35,16 +36,16 @@ const StackNavigator = () => {
         <Stack.Screen option={{ headerShown: false }} name="StartWorkout" component={StartWorkout} />
         <Stack.Screen option={{ headerShown: false }} name="BiceupCheck" component={BicepCurlCheck} />
         <Stack.Screen option={{ headerShown: false }} name="SquatCheck" component={SquatCheck} />
-        <Stack.Screen option= {{ headerShown: false }} name="GoalAchievement" component={GoalAchievement} />
-        <Stack.Screen option= {{ headerShown: false }} name="PerformanceAnalytics" component={PerformanceAnalytics} />
-        <Stack.Screen option= {{ headerShown: false }} name="ProgressTracking" component={ProgressTracking} />
-        <Stack.Screen option={{headerShown: false}} name="RecoveryZone" component={RecoveryZoneScreen}/>
-        <Stack.Screen option={{headerShown: false}} name="RecoveryExercises" component={RecoveryExercises}/>
-        <Stack.Screen option={{headerShown: false}} name="ChatBot" component={ChatBot}/>
-
+        <Stack.Screen option={{ headerShown: false }} name="GoalAchievement" component={GoalAchievement} />
+        <Stack.Screen option={{ headerShown: false }} name="PerformanceAnalytics" component={PerformanceAnalytics} />
+        <Stack.Screen option={{ headerShown: false }} name="ProgressTracking" component={ProgressTracking} />
+        <Stack.Screen option={{ headerShown: false }} name="RecoveryZone" component={RecoveryZoneScreen} />
+        <Stack.Screen option={{ headerShown: false }} name="RecoveryExercises" component={RecoveryExercises} />
+        <Stack.Screen option={{ headerShown: false }} name="ChatBot" component={ChatBot} />
+        <Stack.Screen option={{ headerShown: false }} name="Calorieplanner" component={CaloriePlanner} />
       </Stack.Navigator>
     </NavigationContainer>
   )
-} 
+}
 
 export default StackNavigator;
