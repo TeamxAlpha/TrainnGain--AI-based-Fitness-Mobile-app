@@ -34,6 +34,8 @@ const SquatCheck = () => {
             );
         }
     }, []);
+    console.log(Camera, tf, poseDetection);
+
 
     const calculateAngle = (a, b, c) => {
         const radians = Math.atan2(c.y - b.y, c.x - b.x) - Math.atan2(a.y - b.y, a.x - b.x);
@@ -79,19 +81,15 @@ const SquatCheck = () => {
     }
 
     if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+        return (<View>
+            <Text>No access to camera</Text>
+            <Button onPress={requestPermission} title="grant permission" />
+        </View>
+        );
     }
 
     return (
-        <View style={styles.container}>
-            <CameraView style={styles.camera} facing={facing}>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-                        <Text style={styles.text}>Flip Camera</Text>
-                    </TouchableOpacity>
-                </View>
-            </CameraView>
-            {/* <Text style={styles.title}>Squat Form Check</Text>
+        <View style={styles.container}><Text style={styles.title}>Squat Form Check</Text>
             {hasPermission && (
                 <CameraView
                     style={styles.camera}
@@ -112,7 +110,8 @@ const SquatCheck = () => {
                 <Text style={styles.result}>
                     {isPoseCorrect ? 'Form is Correct!' : 'Form is Incorrect!'}
                 </Text>
-            )} */}
+                                
+            )}
         </View>
     );
 };
@@ -123,18 +122,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
     camera: {
         flex: 1,
         width: '100%',
         height: '100%',
-        position: 'absolute',
-        top: 0,
-        left: 0,
     },
     overlay: {
         flex: 1,

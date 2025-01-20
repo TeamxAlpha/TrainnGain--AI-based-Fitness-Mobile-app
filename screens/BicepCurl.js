@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { Camera } from 'expo-camera';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Button } from 'react-native';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import { CameraType } from 'expo-camera/build/legacy/Camera.types';
 import * as tf from '@tensorflow/tfjs';
 import * as posenet from '@tensorflow-models/pose-detection';
@@ -11,6 +11,7 @@ const BicepCurlCheck = () => {
   const [isPoseCorrect, setIsPoseCorrect] = useState(null);
   const [model, setModel] = useState(null);
   const [cameraType, setCameraType] = useState(CameraType.back);
+  const [permission, requestPermission] = useCameraPermissions();
 
   useEffect(() => {
     const loadModel = async () => {
@@ -22,10 +23,14 @@ const BicepCurlCheck = () => {
 
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
-      console.log("Camera permission status: ", status, "Constants: ", Camera.Constants);
+      console.log("Camera permission status: ", status, hasPermission);
       setHasPermission(status === 'granted');
     })();
   }, []);
+
+  useEffect(() => {
+    console.log("Permission: ", hasPermission, "HasPermission: ", permission);
+  }, [hasPermission]);
 
   const calculateAngle = (a, b, c) => {
     const radians = Math.atan2(c.y - b.y, c.x - b.x) - Math.atan2(a.y - b.y, a.x - b.x);
@@ -37,6 +42,7 @@ const BicepCurlCheck = () => {
     const elbow = landmarks[7];
     const shoulder = landmarks[5];
     const wrist = landmarks[9];
+    console.log(elbow, shoulder, wrist)
 
     const angle = calculateAngle(shoulder, elbow, wrist);
     if (angle >= 150 && angle <= 180) {
@@ -69,32 +75,37 @@ const BicepCurlCheck = () => {
     );
   };
 
-  if (hasPermission === null) {
-    return <Text>Requesting camera permission...</Text>;
-  }
-
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+  if (!permission) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>We need your permission to show the camera</Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Bicep Curl Form Check</Text>
-      {hasPermission && Camera.Constants && (
-        <Camera
-          style={styles.camera}
-          type={cameraType}
-          ref={(ref) => setCameraRef(ref)}
-        >
-          <View style={styles.overlay}>
-            <TouchableOpacity style={styles.checkButton} onPress={startPoseDetection}>
-              <Text style={styles.checkButtonText}>Check Bicep Curl</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.toggleButton} onPress={toggleCamera}>
-              <Text style={styles.toggleButtonText}>Toggle Camera</Text>
-            </TouchableOpacity>
-          </View>
-        </Camera>
+      {hasPermission || permission && (
+        <View>
+          <CameraView
+            style={styles.camera}
+            type={cameraType}
+            ref={(ref) => setCameraRef(ref)}
+            flashMode='auto'
+
+          >
+            <View style={styles.overlay}>
+              <TouchableOpacity style={styles.checkButton} onPress={startPoseDetection}>
+                <Text style={styles.checkButtonText}>Check Bicep Curl</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.toggleButton} onPress={toggleCamera}>
+                <Text style={styles.toggleButtonText}>Toggle Camera</Text>
+              </TouchableOpacity>
+            </View>
+          </CameraView>
+        </View>
       )}
       {isPoseCorrect !== null && (
         <Text style={styles.result}>
@@ -116,10 +127,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  camera: {
+  titleCamera: {
     flex: 1,
-    width: '100%',
-    height: '100%',
+    width: '50%',
+    height: '50%',
     position: 'absolute',
     top: 0,
     left: 0,
