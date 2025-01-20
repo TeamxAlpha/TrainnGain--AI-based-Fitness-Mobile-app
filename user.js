@@ -19,7 +19,7 @@ app.use(session({
   }
 }));
 
-const monogUrl = "mongodb+srv://tngapp:tng@cluster0.ipm7ajq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const monogUrl = "mongodb+srv://mahdimuhammad116:kfatebIGh09kpFM2@trainngain.mnz9j.mongodb.net/TrainNGain"
 mongoose.connect(monogUrl)
   .then(() => {
     console.log("DB Connected");
@@ -168,6 +168,7 @@ app.delete("/custom-plans/:exerciseId", async (req, res) => {
       res.status(500).json({ success: false, message: "Internal Server Error" });
     }
   });
+  
   app.post("/set-goal/:userId", async (req, res) => {
     const { userId } = req.params;
     const { goal } = req.body;
@@ -222,8 +223,7 @@ app.delete("/custom-plans/:exerciseId", async (req, res) => {
       console.error("Error getting performance analytics:", error);
       res.status(500).json({ success: false, message: "Internal Server Error" });
     }
-  });
-  
+  });  
 
 app.listen(5001, () => {
   console.log("Node js server started");
