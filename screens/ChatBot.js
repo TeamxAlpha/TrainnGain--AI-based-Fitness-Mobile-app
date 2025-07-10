@@ -21,7 +21,7 @@ const ChatBot = () => {
   return (
     <View style={styles.container}>
       <WebView
-        source={{ uri: 'https://www.chatbase.co/chatbot-iframe/vtE4KYgApu7v3fbuBs-No' }}
+        source={{ uri: 'https://www.chatbase.co/chatbot-iframe/TeYJ60rBFPa9aABFYZDfv' }}
         style={{ width: '100%', height: windowDimensions.height - 90 }} 
         javaScriptEnabled={true}
         domStorageEnabled={true}
