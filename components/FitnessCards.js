@@ -1,5 +1,6 @@
-import { Image, Text, View, TouchableOpacity } from 'react-native'
-import fitness from '../data/fitness'
+import React from 'react';
+import { Image, Text, View, TouchableOpacity } from 'react-native';
+import fitness from '../data/fitness';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 

@@ -133,7 +133,7 @@ export default [
   {
     id: "3",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqCT0tewpNAZ6R9JUoMDHIHGnpE44U2Fl1Zw&usqp=CAU",
+      "https://images.unsplash.com/photo-1610312856669-2cee66b2949c?q=80&w=405&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     name: "CHEST BEGINNER",
     description: "7x4 CHALLENGE",
     exercises: [

@@ -4,7 +4,7 @@ import { Input, Button } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 
-const Signup = ({ navigation }) => {
+const Signup = ( {navigation} ) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
@@ -25,8 +25,8 @@ async function handleSignup() {
   const userData = {
     name, email, password, age, weight, gender
   }
-  axios.post("http://192.168.18.52:5001/register", userData) //Zohaib's 192.168.100.114, Mahdi's 192.168.100.8
-    .then((res) => signupSuccesful())
+  axios.post("http://10.209.17.125:5001/register", userData) //Zohaib's 192.168.100.114, Mahdi's 192.168.100.8 , Mushaaf  10.209.17.125
+    .then((res) => signupSuccesful(res.data))
     .catch(e => console.log(e))
 }
 

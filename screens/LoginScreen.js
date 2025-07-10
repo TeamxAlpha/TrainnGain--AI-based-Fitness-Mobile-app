@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Login = ({ navigation }) => {
+const Login = ( { navigation } ) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,7 +19,7 @@ const Login = ({ navigation }) => {
         return;
       }
 
-      const response = await axios.post("http://192.168.18.52:5001/login", { //Zohaib's 192.168.100.114, Mahdi's 192.168.100.8
+      const response = await axios.post("http://10.209.17.125:5001/login", { //Zohaib's 192.168.100.114, Mahdi's 192.168.100.8 Mushaaf 10.209.17.125
         email,
         password,
       });
@@ -75,7 +75,7 @@ const Login = ({ navigation }) => {
         />
         <Button title="Log In" buttonStyle={{ backgroundColor: '#3F51B5' }} onPress={handleLogin} />
         <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-          <Text style={styles.signupText}>Don't have an account? Sign Up!</Text>
+          <Text style={styles.signupText}>Dont have an account? Sign Up!</Text>
         </TouchableOpacity>
       </View>
     </>

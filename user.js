@@ -1,12 +1,20 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-require-imports */
+
+
 const express = require("express");
+const mongoose = require("mongoose");
 const usersauth = require("./api/modules/mongo");
-const CustomPlan = require("./api/modules/customplan")
+const CustomPlan = require("./api/modules/customplan");
 const bcrypt = require("bcrypt");
-const session = require('express-session');
+const session = require("express-session");
 const app = express();
 app.use(express.json());
-const mongoose = require("mongoose")
 const User = mongoose.model("UserInfo");
+
+
+
+
 
 app.use(session({
   secret: 'tng',
@@ -19,7 +27,9 @@ app.use(session({
   }
 }));
 
-const monogUrl = "mongodb+srv://mahdimuhammad116:kfatebIGh09kpFM2@trainngain.mnz9j.mongodb.net/TrainNGain"
+const monogUrl = "mongodb+srv://tngapp:tng@cluster0.ipm7ajq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+
 mongoose.connect(monogUrl)
   .then(() => {
     console.log("DB Connected");

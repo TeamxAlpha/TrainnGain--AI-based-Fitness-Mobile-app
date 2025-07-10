@@ -1,12 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Image, TouchableWithoutFeedback, Alert } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { FitnessItems } from '../Context';
-import FitnessCards from '../components/FitnessCards';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import ChatBot from './ChatBot';
+import React, { useState, useEffect, useContext } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  TouchableWithoutFeedback,
+  Alert,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { FitnessItems } from "../Context";
+import FitnessCards from "../components/FitnessCards";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// import ChatBot from './ChatBot';
 
 const tipsAndTricks = [
   "Stay hydrated throughout your workout.",
@@ -49,11 +58,11 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const showTipOnce = async () => {
-      await AsyncStorage.removeItem('hasSeenTip');
+      await AsyncStorage.removeItem("hasSeenTip");
       const randomIndex = Math.floor(Math.random() * tipsAndTricks.length);
       const randomTip = tipsAndTricks[randomIndex];
       Alert.alert("Tip of the Day", randomTip, [{ text: "Got it!" }]);
-      await AsyncStorage.setItem('hasSeenTip', 'true');
+      await AsyncStorage.setItem("hasSeenTip", "true");
     };
 
     showTipOnce();
@@ -61,27 +70,60 @@ const HomeScreen = () => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 20 }}>
-      <View style={{ backgroundColor: "#000000d7", paddingTop: 40, paddingHorizontal: 20, height: 160, width: "100%" }}>
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 50 }}>
+      <View
+        style={{
+          backgroundColor: "#000000d7",
+          paddingTop: 40,
+          paddingHorizontal: 20,
+          height: 160,
+          width: "100%",
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: 50,
+          }}
+        >
           <TouchableOpacity onPress={() => setShowMenu(!showMenu)}>
             <Ionicons name="menu-outline" size={24} color="white" />
           </TouchableOpacity>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Image source={require('../assets/logo.png')} style={{ width: 30, height: 30, marginRight: 10 }} />
-            <Text style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>Train & Gain</Text>
+            <Image
+              source={require("../assets/logo.png")}
+              style={{ width: 30, height: 30, marginRight: 10 }}
+            />
+            <Text style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>
+              Train & Gain
+            </Text>
           </View>
 
           {/* Dark Mode */}
           <TouchableOpacity onPress={() => setShowIcon(!showIcon)}>
-            {showIcon ? <Ionicons name="sunny" size={24} color="white" /> : <Ionicons name="moon" size={24} color="white" />}
+            {showIcon ? (
+              <Ionicons name="sunny" size={24} color="white" />
+            ) : (
+              <Ionicons name="moon" size={24} color="white" />
+            )}
           </TouchableOpacity>
         </View>
 
         {/* Cards Row */}
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 30 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: 30,
+          }}
+        >
           {/* First Card */}
           <View style={styles.shadowCards}>
-            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{calories.toFixed(2)}</Text>
+            <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+              {calories.toFixed(2)}
+            </Text>
             <Text>KCAL</Text>
           </View>
 
@@ -101,7 +143,10 @@ const HomeScreen = () => {
       {showMenu && <Menu onClose={() => setShowMenu(false)} />}
       <FitnessCards />
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CustomWorkout')}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("CustomWorkout")}
+      >
         <MaterialCommunityIcons name="pencil" size={24} color="black" />
       </TouchableOpacity>
     </ScrollView>
@@ -110,19 +155,21 @@ const HomeScreen = () => {
 
 const Menu = ({ onClose }) => {
   const navigation = useNavigation();
-  const [userName, setUserName] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
     const getUserName = async () => {
       try {
-        const name = await AsyncStorage.getItem('name');
+        const name = await AsyncStorage.getItem("name");
         if (name) {
           setUserName(name);
+          setIsLoggedIn(true);
         } else {
           setUserName(null);
         }
       } catch (error) {
-        console.error('Failed to fetch the user name from AsyncStorage', error);
+        console.error("Failed to fetch the user name from AsyncStorage", error);
       }
     };
 
@@ -137,21 +184,21 @@ const Menu = ({ onClose }) => {
 
   const handleLogout = () => {
     Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
+      "Logout",
+      "Are you sure you want to logout?",
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: "Cancel", style: "cancel" },
         {
-          text: 'Logout',
+          text: "Logout",
           onPress: async () => {
             try {
-              await AsyncStorage.removeItem('name');
+              await AsyncStorage.removeItem("name");
               setUserName(null);
             } catch (error) {
-              console.error('Failed to log out', error);
+              console.error("Failed to log out", error);
             }
           },
-          style: 'destructive',
+          style: "destructive",
         },
       ],
       { cancelable: false }
@@ -181,40 +228,74 @@ const Menu = ({ onClose }) => {
           )}
         </View>
 
+        {/* Conditional Rendering for Login and Signup */}
+        {!userName && (
+          <>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate("Login")}
+            >
+              <Text style={styles.menuText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate("Signup")}
+            >
+              <Text style={styles.menuText}>Signup</Text>
+            </TouchableOpacity>
+          </>
+        )}
+
         {/* Menu Items */}
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Nutrition')}>
+
+        {isLoggedIn && (
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => navigation.navigate("Profile")}
+          >
+            <Text style={styles.menuText}>Profile</Text>
+          </TouchableOpacity>
+        )}
+        
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate("Nutrition")}
+        >
           <Text style={styles.menuText}>Nutrition Guidance</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ProgressTracking')}>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate("ProgressTracking")}
+        >
           <Text style={styles.menuText}>Progress Tracking</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.menuItem} onPress={showRandomTip}>
           <Text style={styles.menuText}>Tips & Tricks</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('RecoveryZone')}>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate("RecoveryZone")}
+        >
           <Text style={styles.menuText}>Recovery Zone</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('BiceupCheck')}>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate("BiceupCheck")}
+        >
           <Text style={styles.menuText}>Biceup Check</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('ChatBot')}>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate("ChatBot")}
+        >
           <Text style={styles.menuText}>Chat with Us</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Calorieplanner')}>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate("Calorieplanner")}
+        >
           <Text style={styles.menuText}>Calorie Planner</Text>
         </TouchableOpacity>
-
-        {/* Conditional Rendering for Login and Signup */}
-        {!userName && (
-          <>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.menuText}>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Signup')}>
-              <Text style={styles.menuText}>Signup</Text>
-            </TouchableOpacity>
-          </>
-        )}
 
         {/* Close Menu */}
         <TouchableOpacity style={styles.closeButton} onPress={onClose}>
@@ -271,14 +352,14 @@ const styles = StyleSheet.create({
   // Text Style for Menu Items (Legible and Bold)
   menuText: {
     fontSize: 16, // Smaller text size for a more compact look
-    fontWeight: '500', // Semi-bold for emphasis
+    fontWeight: "500", // Semi-bold for emphasis
     color: "#333", // Dark text color for contrast
   },
 
   // Menu Name Style with an underline to highlight the section
   menuName: {
     fontSize: 18, // Slightly smaller font size for the title
-    fontWeight: '700', // Bold for better prominence
+    fontWeight: "700", // Bold for better prominence
     borderBottomWidth: 2,
     borderBottomColor: "#4CAF50", // Use a vibrant color for emphasis
     marginBottom: 15, // Reduced margin for compactness
@@ -294,7 +375,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white", // White background for the button
     padding: 8, // Slightly smaller padding around the icon
     borderRadius: 50, // Circular shape for the close button
-    shadowColor: "#000", 
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
@@ -303,16 +384,16 @@ const styles = StyleSheet.create({
 
   // Button Style: Modern floating action button with a clean design
   button: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 25, // Adjusted bottom position for a more compact look
     right: 25, // Adjusted right position for better alignment
-    backgroundColor: '#4CAF50', // Green button for a pop of color
+    backgroundColor: "#4CAF50", // Green button for a pop of color
     borderRadius: 50, // Circular button
     width: 50, // Smaller button size
     height: 50, // Smaller button size
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: "#000", 
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 10,
@@ -321,10 +402,10 @@ const styles = StyleSheet.create({
 
   // User Info Section: Clear and spaced out for neatness
   userContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
     paddingVertical: 12, // Reduced padding for a more compact look
     paddingHorizontal: 18, // Slightly smaller horizontal padding
     backgroundColor: "#fff", // Clean white background for clarity
@@ -334,13 +415,13 @@ const styles = StyleSheet.create({
 
   // Adding transition to the hover effect for the menu items
   menuItemArrow: {
-    position: 'absolute',
+    position: "absolute",
     left: 8, // Adjusted left margin for the arrow icon
-    top: '50%',
-    transform: 'translateY(-50%)',
+    top: "50%",
+    transform: "translateY(-50%)",
     fontSize: 16, // Slightly smaller font size for the arrow
     color: "#4CAF50", // Green arrow for visual contrast
-    transition: 'all 0.3s ease', // Smooth transition for hover effects
+    transition: "all 0.3s ease", // Smooth transition for hover effects
   },
 });
 

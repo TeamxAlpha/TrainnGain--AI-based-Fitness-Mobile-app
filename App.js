@@ -26,7 +26,7 @@ export default function App() {
 const LoadingScreen = () => {
   return (
     <View style={styles.container}>
-      <Image source={require('./assets/logo.png')} style={styles.logo} />
+      <Image source='./assets/logo.png'style={styles.logo} />
     </View>
   );
 }

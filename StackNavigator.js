@@ -13,12 +13,13 @@ import StartWorkout from './screens/StartWorkout';
 import GoalAchievement from './screens/GoalAchievement';
 import PerformanceAnalytics from './screens/PerformanceAnalytics';
 import ProgressTracking from './screens/ProgressTracking';
-import BicepCurlCheck from './screens/BicepCurl';
-import SquatCheck from './screens/Squat';
+// import BicepCurlCheck from './screens/BicepCurl';
+// import SquatCheck from './screens/Squat';
 import RecoveryZoneScreen from './screens/RecoveryZone';
 import RecoveryExercises from './screens/RecoveryExercises';
 import ChatBot from './screens/ChatBot';
 import CaloriePlanner from './screens/Calorieplanner';
+import Profile from './screens/ProfileScreen';
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -33,9 +34,10 @@ const StackNavigator = () => {
         <Stack.Screen options={{ headerShown: false }} name="Login" component={Login} />
         <Stack.Screen options={{ headerShown: false }} name="Signup" component={Signup} />
         <Stack.Screen options={{ headerShown: false }} name="CustomWorkout" component={CustomWorkout} />
+        <Stack.Screen options={{ headerShown: false }} name="Profile" component={Profile} />
         <Stack.Screen option={{ headerShown: false }} name="StartWorkout" component={StartWorkout} />
-        <Stack.Screen option={{ headerShown: false }} name="BiceupCheck" component={BicepCurlCheck} />
-        <Stack.Screen option={{ headerShown: false }} name="SquatCheck" component={SquatCheck} />
+        {/* <Stack.Screen option={{ headerShown: false }} name="BiceupCheck" component={BicepCurlCheck} /> */}
+        {/* <Stack.Screen option={{ headerShown: false }} name="SquatCheck" component={SquatCheck} /> */}
         <Stack.Screen option={{ headerShown: false }} name="GoalAchievement" component={GoalAchievement} />
         <Stack.Screen option={{ headerShown: false }} name="PerformanceAnalytics" component={PerformanceAnalytics} />
         <Stack.Screen option={{ headerShown: false }} name="ProgressTracking" component={ProgressTracking} />

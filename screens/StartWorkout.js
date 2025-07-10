@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity,ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Ionicons } from '@expo/vector-icons';
+// import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
 import bg from '../assets/StartWorkoutbg.jpg';
 
 
-const StartWorkout = ({  }) => {
+const StartWorkout = ({navigation}) => {
   const [plan, setPlan] = useState([]);
   const [email, setEmail] = useState('');
 
@@ -17,7 +17,7 @@ const StartWorkout = ({  }) => {
       .then(email => {
         if (email) {
           setEmail(email);
-          axios.get(`http://192.168.100.114:5001/custom-plans/${email}`) // Zohaib's 192.168.100.114 
+          axios.get(`http://10.209.17.125:5001/custom-plans/${email}`) // Zohaib's 192.168.100.114  mushaaf 10.209.17.125
             .then(response => {
               if (response.data.success) {
                 const transformedData = response.data.data.map(item => ({
@@ -44,13 +44,13 @@ const StartWorkout = ({  }) => {
         console.error('Error retrieving email from AsyncStorage:', error);
       });
   }, []);
-
+  console.log('Retrieving email from AsyncStorage...', email);
   const deleteExercise = async (exerciseId) => {
     try {
       const updatedPlan = plan.filter((exercise) => exercise.id !== exerciseId);
       setPlan(updatedPlan);
 
-      const response = await axios.delete(`http://192.168.100.114:5001/custom-plans/${exerciseId}`); //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
+      const response = await axios.delete(`http://10.209.17.125:5001/custom-plans/${exerciseId}`); //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
       console.log('Exercise deleted from custom plan:', response.data);
     } catch (error) {
       console.error('Error deleting exercise from custom plan:', error);
@@ -78,7 +78,7 @@ const StartWorkout = ({  }) => {
         renderItem={({ item }) => (
           <View style={styles.exerciseContainer}>
             <Text style={styles.exerciseName}>{item.name}</Text>
-            <Text style={styles.setsText}>Sets: {item.sets}</Text>
+            {/* <Text style={styles.setsText}>Sets: {item.sets}</Text> */}
             <TouchableOpacity onPress={() => deleteExercise(item.id)} style={styles.deleteButton}>
               <Icon name="trash" size={20} color="red" />
             </TouchableOpacity>
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   setsText: {
     fontSize: 16,
-    color: '#555',
+    color: 'black',
   },
   deleteButton: {
     marginLeft: 10,
