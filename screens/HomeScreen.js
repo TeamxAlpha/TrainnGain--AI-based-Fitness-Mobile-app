@@ -147,7 +147,22 @@ const HomeScreen = () => {
         style={styles.button}
         onPress={() => navigation.navigate("CustomWorkout")}
       >
-        <MaterialCommunityIcons name="pencil" size={24} color="black" />
+        <MaterialCommunityIcons
+          name="pencil"
+          size={26}
+          color="white"
+          style={{
+            backgroundColor: "#000000ff",
+            padding: 12,
+            borderRadius: 50,
+            elevation: 5, // Android shadow
+            shadowColor: "#000", // iOS shadow
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.3,
+            shadowRadius: 3,
+          }}
+        />
+
       </TouchableOpacity>
     </ScrollView>
   );
@@ -256,7 +271,7 @@ const Menu = ({ onClose }) => {
             <Text style={styles.menuText}>Profile</Text>
           </TouchableOpacity>
         )}
-        
+
         <TouchableOpacity
           style={styles.menuItem}
           onPress={() => navigation.navigate("Nutrition")}

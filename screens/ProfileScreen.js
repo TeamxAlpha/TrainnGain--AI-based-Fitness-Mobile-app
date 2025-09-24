@@ -21,11 +21,14 @@ const ProfileScreen = ({ navigation }) => {
     try {
       const email = await AsyncStorage.getItem("email");
       const name = await AsyncStorage.getItem("name");
-      if (!email) return;
+      const userId = await AsyncStorage.getItem("userId"); // ✅ fetch saved userId
+      
+      if (!email || !userId) return;
 
       setUserData({
-        name: name,
-        email: email,
+        userId, // ✅ add id to profile
+        name,
+        email,
         age: 23,
         gender: "Male",
         weight: "72kg",
@@ -69,24 +72,13 @@ const ProfileScreen = ({ navigation }) => {
           <Text style={styles.email}>{userData.email}</Text>
 
           <View style={styles.statsContainer}>
+            <ProfileStat icon="id-badge" label="User ID" value={userData.userId} />
             <ProfileStat icon="calendar" label="Age" value={userData.age} />
-            <ProfileStat
-              icon="venus-mars"
-              label="Gender"
-              value={userData.gender}
-            />
+            <ProfileStat icon="venus-mars" label="Gender" value={userData.gender} />
             <ProfileStat icon="weight" label="Weight" value={userData.weight} />
             <ProfileStat icon="bullseye" label="Goal" value={userData.goal} />
-            <ProfileStat
-              icon="dumbbell"
-              label="Workouts Done"
-              value={userData.workoutsCompleted}
-            />
-            <ProfileStat
-              icon="clock"
-              label="Total Hours"
-              value={`${userData.totalWorkoutHours} hrs`}
-            />
+            <ProfileStat icon="dumbbell" label="Workouts Done" value={userData.workoutsCompleted} />
+            <ProfileStat icon="clock" label="Total Hours" value={`${userData.totalWorkoutHours} hrs`} />
           </View>
         </Animated.View>
       </ScrollView>
@@ -105,13 +97,10 @@ const ProfileStat = ({ icon, label, value }) => (
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F4F6FA",
-  },
+  container: { flex: 1, backgroundColor: "#F4F6FA" },
   scrollView: {
-    flexGrow: 1, // Important to let ScrollView stretch
-    backgroundColor: "#F4F6FA", // Light background to look like a fitness app
+    flexGrow: 1,
+    backgroundColor: "#F4F6FA",
     alignItems: "center",
     paddingVertical: 40,
   },
@@ -163,11 +152,7 @@ const styles = StyleSheet.create({
     color: "#3F51B5",
     fontWeight: "500",
   },
-  center: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  center: { flex: 1, justifyContent: "center", alignItems: "center" },
   backButton: {
     position: "absolute",
     top: 50,

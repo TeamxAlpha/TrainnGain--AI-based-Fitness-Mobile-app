@@ -1,81 +1,109 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Input, Button } from 'react-native-elements';
-import { Ionicons } from '@expo/vector-icons';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Image,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Login = ( { navigation } ) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const Login = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-
-  async function handleLogin() {
-
+  const handleLogin = async () => {
     try {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        alert("Please enter a valid email address");
+      if (!email || !password) {
+        Alert.alert("Error", "Please enter both email and password.");
         return;
       }
 
-      const response = await axios.post("http://10.209.17.125:5001/login", { //Zohaib's 192.168.100.114, Mahdi's 192.168.100.8 Mushaaf 10.209.17.125
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        Alert.alert("Invalid Email", "Please enter a valid email address.");
+        return;
+      }
+
+      const response = await axios.post("http://192.168.100.114:5001/login", {
         email,
         password,
       });
 
       if (response.data.success) {
-        const nameFromResponse = response.data.username;
-        console.log(response.data)
-        const emailFromResponse = response.data.email;
-        await AsyncStorage.setItem("name", nameFromResponse);
+        const { userId, username, email: emailFromResponse } = response.data;
+
+        // ✅ Store user data
+        await AsyncStorage.setItem("userId", userId);
+        await AsyncStorage.setItem("name", username);
         await AsyncStorage.setItem("email", emailFromResponse);
-        navigation.navigate('Home')
+
+        Alert.alert("Login Successful", `Welcome back, ${username}!`);
+
+        navigation.replace("Home"); // ✅ replace to avoid back navigation
       } else {
-        alert(response.data.message);
+        Alert.alert("Login Failed", response.data.message);
       }
     } catch (error) {
-      alert("Error occurred while logging in");
-      console.log(error);
+      console.error("Login error:", error.response?.data || error.message);
+      Alert.alert("Error", "Something went wrong. Please try again.");
     }
-  }
-
+  };
 
   return (
     <>
+      {/* Back button */}
       <Ionicons
         onPress={() => navigation.goBack()}
-        style={{ position: 'absolute', top: 40, left: 20, backgroundColor: "white", borderRadius: 8, padding: 3 }}
+        style={styles.backButton}
         name="arrow-back-outline"
         size={24}
         color="black"
       />
 
       <View style={styles.container}>
-        <Image source={require('../assets/logo.png')} onPress={() => navigation.navigate('Home')} style={{ width: 200, height: 200, resizeMode: 'contain', marginBottom: 20 }} />
+        {/* Logo */}
+        <Image
+          source={require("../assets/logo.png")}
+          style={styles.logo}
+        />
+
         <Text style={styles.header}>Login</Text>
-        <Input
+
+        {/* Email input */}
+        <TextInput
+          style={styles.input}
           placeholder="Email"
-          leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-          containerStyle={{ marginBottom: 20 }}
-          leftIconContainerStyle={{ marginRight: 10 }}
           value={email}
-          onChangeText={text => setEmail(text.toLowerCase())}
+          onChangeText={(text) => setEmail(text.toLowerCase())}
           autoCapitalize="none"
+          keyboardType="email-address"
         />
-        <Input
+
+        {/* Password input */}
+        <TextInput
+          style={styles.input}
           placeholder="Password"
-          secureTextEntry
-          leftIcon={{ type: 'font-awesome', name: 'lock' }}
-          containerStyle={{ marginBottom: 20 }}
-          leftIconContainerStyle={{ marginRight: 10 }}
           value={password}
-          onChangeText={text => setPassword(text)}
+          onChangeText={setPassword}
+          secureTextEntry
           autoCapitalize="none"
         />
-        <Button title="Log In" buttonStyle={{ backgroundColor: '#3F51B5' }} onPress={handleLogin} />
-        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-          <Text style={styles.signupText}>Dont have an account? Sign Up!</Text>
+
+        {/* Login button */}
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Log In</Text>
+        </TouchableOpacity>
+
+        {/* Navigate to signup */}
+        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+          <Text style={styles.signupText}>
+            Don’t have an account? Sign Up!
+          </Text>
         </TouchableOpacity>
       </View>
     </>
@@ -83,20 +111,65 @@ const Login = ( { navigation } ) => {
 };
 
 const styles = StyleSheet.create({
+  backButton: {
+    position: "absolute",
+    top: 40,
+    left: 20,
+    backgroundColor: "white",
+    borderRadius: 8,
+    padding: 3,
+    zIndex: 1,
+  },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 20,
+    backgroundColor: "#F4F6FA",
   },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
+  logo: {
+    width: 200,
+    height: 200,
+    resizeMode: "contain",
     marginBottom: 20,
   },
+  header: {
+    fontSize: 26,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#3F51B5",
+  },
+  input: {
+    height: 50,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    marginBottom: 15,
+    paddingLeft: 15,
+    borderRadius: 12,
+    backgroundColor: "#fff",
+    fontSize: 16,
+    width: "100%",
+    elevation: 2,
+  },
+  button: {
+    backgroundColor: "#3F51B5",
+    paddingVertical: 14,
+    borderRadius: 12,
+    marginBottom: 12,
+    alignItems: "center",
+    width: "100%",
+    elevation: 3,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
   signupText: {
-    color: '#3F51B5',
+    color: "#3F51B5",
     marginTop: 20,
+    fontSize: 15,
+    fontWeight: "500",
   },
 });
 

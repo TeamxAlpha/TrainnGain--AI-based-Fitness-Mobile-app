@@ -270,7 +270,7 @@ const CustomWorkouts = ({ navigation }) => {
 
         setCustomPlan([...customPlan, selectedExercise]);
         axios
-          .post("http://10.209.17.125:5001/custom-plans", exerciseData) //Zohaib's 192.168.100.114, Mahdi's 192.168.100.8 Mushaaf 10.209.17.125
+          .post("http://192.168.100.114:5001/custom-plans", exerciseData) //Zohaib's 192.168.100.114, Mahdi's 192.168.100.8 Mushaaf 10.209.17.125
           .then((response) => {
             ToastAndroid.showWithGravity(
               `Workout added to custom plan: ${selectedExercise.name}`,
@@ -299,14 +299,7 @@ const CustomWorkouts = ({ navigation }) => {
     <ImageBackground source={bgImage} style={styles.backgroundImage}>
       <Ionicons
         onPress={() => navigation.navigate("Home")}
-        style={{
-          position: "absolute",
-          top: 50,
-          left: 20,
-          backgroundColor: "white",
-          borderRadius: 8,
-          padding: 3,
-        }}
+        style={styles.backIcon}
         name="arrow-back-outline"
         size={24}
         color="black"
@@ -409,18 +402,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   startButton: {
-    backgroundColor: "#1e88e5",
+    backgroundColor: "gray", // Blue button
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 25,
     alignItems: "center",
     alignSelf: "center",
     marginVertical: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4, // for Android
   },
   startButtonText: {
-    color: "white",
+    color: "white",       // text only
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Roboto",
+    fontWeight: "600",
   },
 });
 

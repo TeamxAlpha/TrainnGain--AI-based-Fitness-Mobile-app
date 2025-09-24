@@ -1,135 +1,134 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
-import { ProgressChart } from 'react-native-chart-kit';
-import { Dimensions } from 'react-native';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+} from "react-native";
+import { ProgressChart } from "react-native-chart-kit";
 
 const screenWidth = Dimensions.get("window").width;
 
 const CaloriePlanner = () => {
   const [userData, setUserData] = useState({
-    age: '',
-    weight: '',
-    height: '',
-    activityLevel: 'moderate', // Default activity level
+    age: "",
+    weight: "",
+    height: "",
+    activityLevel: "moderate",
   });
-
-  const [goal, setGoal] = useState('maintain'); // 'maintain', 'lose', 'gain'
+  const [goal, setGoal] = useState("maintain");
   const [recommendedCalories, setRecommendedCalories] = useState(null);
   const [planProgress, setPlanProgress] = useState(0);
 
-  // Calorie calculation based on user data and goal
   const calculateCalories = () => {
     const { age, weight, height, activityLevel } = userData;
+    if (!age || !weight || !height) return;
+
     const activityMultiplier = {
       low: 1.2,
       moderate: 1.55,
       high: 1.9,
     };
 
-    const BMR = 10 * weight + 6.25 * height - 5 * age + 5; // Simplified Harris-Benedict Formula
+    const BMR = 10 * weight + 6.25 * height - 5 * age + 5;
     let calories = BMR * activityMultiplier[activityLevel];
 
-    // Adjust based on goal
-    if (goal === 'lose') {
-      calories -= 500;
-    } else if (goal === 'gain') {
-      calories += 500;
-    }
+    if (goal === "lose") calories -= 500;
+    else if (goal === "gain") calories += 500;
 
     setRecommendedCalories(Math.round(calories));
-  };
-
-  // Visualization Data for Progress Chart
-  const chartData = {
-    data: [planProgress], // Progress out of 100%
+    setPlanProgress(Math.min(calories / 3000, 1)); // Example progress
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header}>Calorie Intake Planner</Text>
+    <ScrollView contentContainerStyle={styles.container}>
 
-      {/* User Data Input */}
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Age:</Text>
+      {/* User Inputs */}
+      <View style={styles.inputContainer}>
         <TextInput
+          placeholder="Age"
           style={styles.input}
           keyboardType="numeric"
           value={userData.age}
           onChangeText={(val) => setUserData({ ...userData, age: val })}
         />
-      </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Weight (kg):</Text>
         <TextInput
+          placeholder="Weight (kg)"
           style={styles.input}
           keyboardType="numeric"
           value={userData.weight}
           onChangeText={(val) => setUserData({ ...userData, weight: val })}
         />
-      </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Height (cm):</Text>
         <TextInput
+          placeholder="Height (cm)"
           style={styles.input}
           keyboardType="numeric"
           value={userData.height}
           onChangeText={(val) => setUserData({ ...userData, height: val })}
         />
-      </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Activity Level:</Text>
         <TextInput
+          placeholder="Activity Level (low, moderate, high)"
           style={styles.input}
           value={userData.activityLevel}
-          placeholder="low, moderate, or high"
-          onChangeText={(val) => setUserData({ ...userData, activityLevel: val })}
+          onChangeText={(val) =>
+            setUserData({ ...userData, activityLevel: val })
+          }
         />
       </View>
 
       {/* Goal Selection */}
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Goal:</Text>
-        <Button
-          title="Lose Weight"
-          onPress={() => setGoal('lose')}
-          color={goal === 'lose' ? 'green' : 'gray'}
-        />
-        <Button
-          title="Maintain Weight"
-          onPress={() => setGoal('maintain')}
-          color={goal === 'maintain' ? 'blue' : 'gray'}
-        />
-        <Button
-          title="Gain Weight"
-          onPress={() => setGoal('gain')}
-          color={goal === 'gain' ? 'red' : 'gray'}
-        />
+      <View style={styles.goalContainer}>
+        {["lose", "maintain", "gain"].map((g) => (
+          <TouchableOpacity
+            key={g}
+            style={[
+              styles.goalButton,
+              goal === g && styles.activeGoalButton,
+              g === "lose" && { backgroundColor: goal === g ? "#F44336" : "#FFD6D6" },
+              g === "maintain" && { backgroundColor: goal === g ? "#2196F3" : "#D6E9FF" },
+              g === "gain" && { backgroundColor: goal === g ? "#4CAF50" : "#D6FFD6" },
+            ]}
+            onPress={() => setGoal(g)}
+          >
+            <Text style={[styles.goalText, goal === g && { color: "#fff" }]}>
+              {g.charAt(0).toUpperCase() + g.slice(1)}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
-      {/* Calculate and Display Results */}
-      <View style={styles.result}>
-        <Button title="Calculate Calories" onPress={calculateCalories} />
-        {recommendedCalories && (
+      {/* Calculate */}
+      <TouchableOpacity style={styles.calculateButton} onPress={calculateCalories}>
+        <Text style={styles.calculateButtonText}>Calculate Calories</Text>
+      </TouchableOpacity>
+
+      {/* Result Card */}
+      {recommendedCalories && (
+        <View style={styles.resultCard}>
           <Text style={styles.resultText}>
-            Recommended Daily Calorie Intake: {recommendedCalories} kcal
+            Recommended Daily Calorie Intake
           </Text>
-        )}
-      </View>
+          <Text style={styles.calories}>{recommendedCalories} kcal</Text>
+        </View>
+      )}
 
-      {/* Progress Visualization */}
+      {/* Progress Chart */}
       <View style={styles.chartContainer}>
         <Text style={styles.chartHeader}>Your Progress</Text>
         <ProgressChart
-          data={chartData}
+          data={{ data: [planProgress] }}
           width={screenWidth * 0.9}
           height={220}
           strokeWidth={16}
           radius={32}
           chartConfig={{
-            backgroundGradientFrom: '#ffffff',
-            backgroundGradientTo: '#ffffff',
-            color: (opacity = 1) => `rgba(0, 122, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            backgroundGradientFrom: "#fff",
+            backgroundGradientTo: "#fff",
+            color: (opacity = 1) => `rgba(33, 150, 243, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(0,0,0, ${opacity})`,
           }}
           hideLegend={false}
         />
@@ -140,47 +139,94 @@ const CaloriePlanner = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 20,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#F4F6FA",
+    alignItems: "center",
   },
   header: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 26,
+    fontWeight: "bold",
     marginBottom: 20,
-    textAlign: 'center',
+    color: "#3F51B5",
   },
-  inputGroup: {
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
+  inputContainer: {
+    width: "100%",
+    marginBottom: 20,
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 10,
-    backgroundColor: '#fff',
+    width: "100%",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 12,
+    fontSize: 16,
+    marginBottom: 12,
+    elevation: 2,
   },
-  result: {
-    marginTop: 20,
-    alignItems: 'center',
+  goalContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginBottom: 20,
+  },
+  goalButton: {
+    flex: 1,
+    marginHorizontal: 5,
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  activeGoalButton: {
+    color: "#fff",
+  },
+  goalText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333",
+  },
+  calculateButton: {
+    width: "100%",
+    backgroundColor: "#3F51B5",
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: "center",
+    marginBottom: 20,
+    elevation: 3,
+  },
+  calculateButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  resultCard: {
+    width: "100%",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 20,
+    elevation: 3,
+    alignItems: "center",
   },
   resultText: {
-    marginTop: 10,
-    fontSize: 18,
-    color: '#333',
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#333",
+  },
+  calories: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#3F51B5",
+    marginTop: 8,
   },
   chartContainer: {
-    marginTop: 30,
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 40,
   },
   chartHeader: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 12,
+    color: "#3F51B5",
   },
 });
 

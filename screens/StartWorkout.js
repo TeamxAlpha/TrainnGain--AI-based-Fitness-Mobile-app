@@ -17,7 +17,7 @@ const StartWorkout = ({navigation}) => {
       .then(email => {
         if (email) {
           setEmail(email);
-          axios.get(`http://10.209.17.125:5001/custom-plans/${email}`) // Zohaib's 192.168.100.114  mushaaf 10.209.17.125
+          axios.get(`http://192.168.100.114:5001/custom-plans/${email}`) // Zohaib's 192.168.100.114  mushaaf 10.209.17.125
             .then(response => {
               if (response.data.success) {
                 const transformedData = response.data.data.map(item => ({
@@ -50,7 +50,7 @@ const StartWorkout = ({navigation}) => {
       const updatedPlan = plan.filter((exercise) => exercise.id !== exerciseId);
       setPlan(updatedPlan);
 
-      const response = await axios.delete(`http://10.209.17.125:5001/custom-plans/${exerciseId}`); //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
+      const response = await axios.delete(`http://0.0.0.0:5001/custom-plans/${exerciseId}`); //Zohaib's 192.168.137.1, Mahdi's 192.168.100.8
       console.log('Exercise deleted from custom plan:', response.data);
     } catch (error) {
       console.error('Error deleting exercise from custom plan:', error);
